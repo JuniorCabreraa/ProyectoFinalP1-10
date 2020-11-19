@@ -52,14 +52,12 @@ public class Liga {
 	}
 	
 	//Insertar Jugador
-	
 	public void insertarJugador(Jugador jugador) {
 		listaJugadores.add(jugador);
 		
 	}
 	
 	//Buscar Jugador Por Nombre
-	
 	public Jugador buscarJugador(String name) {
 		Jugador aux = null;
 		boolean found = false;
