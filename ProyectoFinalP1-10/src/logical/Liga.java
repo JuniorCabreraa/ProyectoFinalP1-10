@@ -2,6 +2,7 @@ package logical;
 
 import java.util.ArrayList;
 
+
 public class Liga {
 	private ArrayList<Jugador> listaJugadores;
 	private ArrayList<Equipo> listaEquipos;
@@ -49,4 +50,29 @@ public class Liga {
 	public void setCantPartidos(int cantPartidos) {
 		this.cantPartidos = cantPartidos;
 	}
+	
+	//Insertar Jugador
+	
+	public void insertarJugador(Jugador jugador) {
+		listaJugadores.add(jugador);
+		
+	}
+	
+	//Buscar Jugador Por Nombre
+	
+	public Jugador buscarJugador(String name) {
+		Jugador aux = null;
+		boolean found = false;
+		int x = 0;
+		while (!found && x<listaJugadores.size()) {
+			if (listaJugadores.get(x).getNombre().equalsIgnoreCase(name)) {
+				aux = listaJugadores.get(x);
+				found = true;
+			}
+			x++;
+		}
+		return aux;
+	}
+	
+
 }
