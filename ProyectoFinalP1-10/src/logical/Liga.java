@@ -74,5 +74,22 @@ public class Liga {
 		return aux;
 	}
 	
+	
+	//Insertar equipo
+	public void insertarEquipo(Equipo equipo) {
+		listaEquipos.add(equipo);
+	}
+	
+	//Buscar equipo por nombre
+	private Equipo buscarEquipo(String equipo) {
+		Equipo equipoEncontrado = null;
+		for (Equipo team : listaEquipos) {
+			if(team.getNombre().equalsIgnoreCase(equipo)) {
+				equipoEncontrado = team; 
+			}
+		}
+		return equipoEncontrado;
+	}
+
 
 }
