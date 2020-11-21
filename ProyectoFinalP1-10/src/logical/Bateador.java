@@ -16,6 +16,8 @@ public class Bateador extends Jugador {
 	private int dobleMatanza;
 	private int outsRealizados;
 	private int basesRobadasPermitidas;
+	private int golpeado;
+	private int elevadosSacrificios;
 	
 	//Constructor
 	public Bateador(String nombre, Date nacimiento, String altura, float peso, int noCamiseta, String bat_lanz,
@@ -34,6 +36,8 @@ public class Bateador extends Jugador {
 		dobleMatanza = 0;
 		outsRealizados = 0;
 		basesRobadasPermitidas = 0;
+		golpeado = 0;
+		elevadosSacrificios = 0;
 	}
 	
 	//Getters and Setters
@@ -140,4 +144,49 @@ public class Bateador extends Jugador {
 	public void setBasesRobadasPermitidas(int basesRobadasPermitidas) {
 		this.basesRobadasPermitidas = basesRobadasPermitidas;
 	}
+
+	public int getGolpeado() {
+		return golpeado;
+	}
+
+	public void setGolpeado(int golpeado) {
+		this.golpeado = golpeado;
+	}
+
+	public int getElevadosSacrificios() {
+		return elevadosSacrificios;
+	}
+
+	public void setElevadosSacrificios(int elevadosSacrificios) {
+		this.elevadosSacrificios = elevadosSacrificios;
+	}
+	
+	//Promedio de Bateo	
+	public float promedioBateo() {
+		float aux = .000f;
+		aux = (hits/turnosBate);
+		return aux;
+	}
+	
+	//Porcentaje de Alcanzar Bases	
+	public float porcentajeAlcanceBases() {
+		float aux = .000f;
+		aux = ((hits+boletosBase+golpeado)/(hits+boletosBase+golpeado+elevadosSacrificios));
+		return aux;
+	}
+	
+	//Porcentaje de Slugging (Indice de bases totales por turnos al bate)	
+	public float slugging() {
+		float aux = .000f;
+		aux = (((hits)+(2*dobles)+(3*triples)+(4*homeruns))/(turnosBate));
+		return aux;
+	}
+	
+	//Porcentaje de Alcanzar Mas Bases Por Slugging
+	public float porcentajeAlcanceBasesPorSlugging() {
+		float aux = .000f;
+		aux = slugging()+porcentajeAlcanceBases();
+		return aux;
+	}
+	
 }
