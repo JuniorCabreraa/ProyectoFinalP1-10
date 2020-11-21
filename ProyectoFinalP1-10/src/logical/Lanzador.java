@@ -140,4 +140,39 @@ public class Lanzador extends Jugador {
 	public void setAperturas(int aperturas) {
 		this.aperturas = aperturas;
 	}
+	
+	//Entradas lanzadas
+	public int entradasLanzadas() {
+		int entradas = 0;
+		boolean lanzamiento = false;
+		
+		while(!lanzamiento) {
+			if(juegosLanzados > 0) {
+			lanzamiento = true;
+			}
+			entradas++;
+		}
+		
+		return entradas;
+	}
+	
+	//Porcentaje de carreras limpias
+	public int porcentajeCarrerasLimpias() {
+		int porcentaje = 0;
+		int x1 = carrerasLimpiasPermitidas * 9;
+		porcentaje = x1/entradasLanzadas();
+		
+		return porcentaje;
+	}
+	
+	
+	//Boletos y hits por entradas lanzadas
+	public int boletosYhits() {
+		int whip = 0;
+		int x2 = getBoletosBase() + hitsPermitidos;
+		whip = x2/entradasLanzadas();
+		
+		return whip;
+	}
+	
 }
