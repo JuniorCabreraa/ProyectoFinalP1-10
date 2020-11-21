@@ -1,5 +1,7 @@
 package logical;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 public class Lanzador extends Jugador {
@@ -16,6 +18,7 @@ public class Lanzador extends Jugador {
 	private int juegosBlanqueados;
 	private int juegosLanzados;
 	private int aperturas;
+	private int outs;
 	
 	//Constructor
 	public Lanzador(String nombre, Date nacimiento, String altura, float peso, int noCamiseta, String bat_lanz,
@@ -34,6 +37,7 @@ public class Lanzador extends Jugador {
 		juegosBlanqueados = 0;
 		juegosLanzados = 0;
 		aperturas = 0;
+		outs = 0;
 	}
 	
 	//Getters and Setters
@@ -141,37 +145,32 @@ public class Lanzador extends Jugador {
 		this.aperturas = aperturas;
 	}
 	
+	public int getOuts() {
+		return outs;
+	}
+
+	public void setOuts(int outs) {
+		this.outs = outs;
+	}
+	
 	//Entradas lanzadas
-	public int entradasLanzadas() {
-		int entradas = 0;
-		boolean lanzamiento = false;
-		
-		while(!lanzamiento) {
-			if(juegosLanzados > 0) {
-			lanzamiento = true;
-			}
-			entradas++;
-		}
-		
-		return entradas;
+	public float entradasLanzadas() {
+		float x = (float)outs/3;
+		BigDecimal entradas = new BigDecimal(x).setScale(1, RoundingMode.HALF_UP);
+		return entradas.floatValue();
 	}
 	
 	//Porcentaje de carreras limpias
-	public int porcentajeCarrerasLimpias() {
-		int porcentaje = 0;
-		int x1 = carrerasLimpiasPermitidas * 9;
-		porcentaje = x1/entradasLanzadas();
-		
+	public BigDecimal porcentajeCarrerasLimpias() {
+		float x = ((float)carrerasLimpiasPermitidas*9)/entradasLanzadas();
+		BigDecimal porcentaje = new BigDecimal(x).setScale(2, RoundingMode.HALF_UP);
 		return porcentaje;
 	}
 	
-	
 	//Boletos y hits por entradas lanzadas
-	public int boletosYhits() {
-		int whip = 0;
-		int x2 = getBoletosBase() + hitsPermitidos;
-		whip = x2/entradasLanzadas();
-		
+	public BigDecimal boletosYhits() {
+		float x = ((float)boletosBase+hitsPermitidos)/entradasLanzadas();
+		BigDecimal whip = new BigDecimal(x).setScale(2, RoundingMode.HALF_UP);
 		return whip;
 	}
 	

@@ -1,5 +1,7 @@
 package logical;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 public class Bateador extends Jugador {
@@ -162,31 +164,31 @@ public class Bateador extends Jugador {
 	}
 	
 	//Promedio de Bateo	
-	public float promedioBateo() {
-		float aux = .000f;
-		aux = (hits/turnosBate);
-		return aux;
+	public BigDecimal promedioBateo() {
+		float x = ((float)hits/turnosBate);
+		BigDecimal avg = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP);
+		return avg;
 	}
 	
 	//Porcentaje de Alcanzar Bases	
-	public float porcentajeAlcanceBases() {
-		float aux = .000f;
-		aux = ((hits+boletosBase+golpeado)/(hits+boletosBase+golpeado+elevadosSacrificios));
-		return aux;
+	public BigDecimal porcentajeAlcanceBases() {
+		float x = (((float)hits+boletosBase+golpeado)/(hits+boletosBase+golpeado+elevadosSacrificios));
+		BigDecimal obp = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP);
+		return obp;
 	}
 	
 	//Porcentaje de Slugging (Indice de bases totales por turnos al bate)	
-	public float slugging() {
-		float aux = .000f;
-		aux = (((hits)+(2*dobles)+(3*triples)+(4*homeruns))/(turnosBate));
-		return aux;
+	public BigDecimal slugging() {
+		float x = ((((float)hits)+(2*dobles)+(3*triples)+(4*homeruns))/(turnosBate));
+		BigDecimal slg = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP);
+		return slg;
 	}
 	
 	//Porcentaje de Alcanzar Mas Bases Por Slugging
-	public float porcentajeAlcanceBasesPorSlugging() {
-		float aux = .000f;
-		aux = slugging()+porcentajeAlcanceBases();
-		return aux;
+	public BigDecimal porcentajeAlcanceBasesPorSlugging() {
+		BigDecimal x = slugging().add(porcentajeAlcanceBases());
+		BigDecimal ops = x.setScale(3, RoundingMode.HALF_UP);
+		return ops;
 	}
 	
 }
