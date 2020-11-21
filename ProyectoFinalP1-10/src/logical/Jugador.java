@@ -158,4 +158,21 @@ public class Jugador {
 		lesionado = true;
 	}
 	
+	//Verificar Lesion
+	public boolean verificarLesion() {
+		boolean saludable = false;
+		Date present = new Date();
+		
+		for (Lesion lesion : misLesiones) {
+			if (present.after(lesion.getFinaliza()) == true) {
+				lesion.setActiva(false);
+			} 
+			if (misLesiones.indexOf(lesion) == (misLesiones.size()-1) && lesion.isActiva() == false) {
+				lesionado = false;
+				saludable = true;
+			}
+		}
+		return saludable;
+	}
+
 }

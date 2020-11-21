@@ -11,7 +11,9 @@ public class Partido {
 	private ArrayList<Jugador> alineacionLocal;
 	private ArrayList<Jugador> alineacionVisitante;
 	private String estadio;
-	private int[] entradas;
+	private int[] entradasLocal;
+	private int[] entradasVisitante;
+	private int entradas;
 	private int carrerasLocal;
 	private int carrerasVisitante;
 	private int hitsLocal;
@@ -30,7 +32,9 @@ public class Partido {
 		alineacionLocal = new ArrayList<Jugador>(9);
 		alineacionVisitante =  new ArrayList<Jugador>(9);
 		this.estadio = estadio;
-		entradas = new int[12];
+		entradasLocal = new int[15];
+		entradasVisitante = new int[15];
+		entradas = 0;
 		carrerasLocal = 0;
 		carrerasVisitante = 0;
 		hitsLocal = 0;
@@ -97,11 +101,27 @@ public class Partido {
 		this.estadio = estadio;
 	}
 
-	public int[] getEntradas() {
+	public int[] getEntradasLocal() {
+		return entradasLocal;
+	}
+
+	public void setEntradasLocal(int[] entradasLocal) {
+		this.entradasLocal = entradasLocal;
+	}
+
+	public int[] getEntradasVisitante() {
+		return entradasVisitante;
+	}
+
+	public void setEntradasVisitante(int[] entradasVisitante) {
+		this.entradasVisitante = entradasVisitante;
+	}
+
+	public int getEntradas() {
 		return entradas;
 	}
 
-	public void setEntradas(int[] entradas) {
+	public void setEntradas(int entradas) {
 		this.entradas = entradas;
 	}
 

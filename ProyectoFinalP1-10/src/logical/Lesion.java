@@ -9,6 +9,7 @@ public class Lesion {
 	private String diagnostico;
 	private Date inicio;
 	private Date finaliza;
+	private boolean activa;
 	
 	//Constructor
 	public Lesion(Jugador jugador, Equipo equipo, String categoria, String diagnostico, Date finaliza) {
@@ -19,6 +20,7 @@ public class Lesion {
 		this.diagnostico = diagnostico;
 		inicio = new Date();
 		this.finaliza = finaliza;
+		activa = true;
 	}
 	
 	//Getters and Setters
@@ -68,6 +70,14 @@ public class Lesion {
 
 	public void setFinaliza(Date finaliza) {
 		this.finaliza = finaliza;
+	}
+
+	public boolean isActiva() {
+		return activa;
+	}
+
+	public void setActiva(boolean activa) {
+		this.activa = activa;
 	}
 	
 }

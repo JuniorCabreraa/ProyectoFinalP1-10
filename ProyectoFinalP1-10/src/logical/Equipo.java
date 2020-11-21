@@ -1,5 +1,7 @@
 package logical;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,6 +26,7 @@ public class Equipo {
 	private int boletosBase;
 	private int ponches;
 	private int basesRobadas;
+	private int turnosBate;
 	private ArrayList<Jugador> misJugadores;
 	private ArrayList<Lanzador> misLanzadores;
 	private ArrayList<Jugador> alineacion;
@@ -49,6 +52,7 @@ public class Equipo {
 		boletosBase = 0;
 		ponches = 0;
 		basesRobadas = 0;
+		turnosBate = 0;
 		misJugadores = new ArrayList<Jugador>(25);
 		misLanzadores = new ArrayList<Lanzador>(7);
 		alineacion = new ArrayList<Jugador>(9);
@@ -223,17 +227,22 @@ public class Equipo {
 		this.alineacion = alineacion;
 	}
 
+	public int getTurnosBate() {
+		return turnosBate;
+	}
+
+	public void setTurnosBate(int turnosBate) {
+		this.turnosBate = turnosBate;
+	}
+
 	//Insertar Jugador
 	public void insertarJugador(Jugador jugador) {
-		int i = 0;
-		
 		for (Jugador x : misJugadores) {
 			if (jugador.getNoCamiseta() == x.getNoCamiseta()) {
-				i = jugador.getNoCamiseta()+1;
-				jugador.setNoCamiseta(i);
-			} else if (misJugadores.size() == misJugadores.lastIndexOf(x)+1) {
+				JOptionPane.showMessageDialog(null, "Número de Camiseta No Disponible" , null, JOptionPane.ERROR_MESSAGE);
+				break;
+			} else if (misJugadores.indexOf(x) == (misJugadores.size()-1) && jugador.getNoCamiseta() != x.getNoCamiseta()) {
 				misJugadores.add(jugador);
-				JOptionPane.showMessageDialog(null, "Número de Camiseta cambiado a: "+jugador.getNoCamiseta()+", debido a coincidencia", null, JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}
@@ -308,7 +317,9 @@ public class Equipo {
 	//Cantidad de Jugadores en mi Equipo (Lanzadores, Bateadores y Total)
 	public int[] cantJugadores() {
 		int[] cant = new int [3];
-		
+		cant[0] = 0;
+		cant[1] = 0;
+		cant[2] = 0;
 		for (Jugador jugador : misJugadores) {
 			if (jugador instanceof Lanzador) {
 				cant[0]++;
@@ -321,5 +332,11 @@ public class Equipo {
 		return cant;
 	}
 	
+	//Promedio de Bateo	
+	public BigDecimal promedioBateo() {
+		float x = ((float)hits/turnosBate);
+		BigDecimal avg = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP);
+		return avg;
+	}
 	
 }
