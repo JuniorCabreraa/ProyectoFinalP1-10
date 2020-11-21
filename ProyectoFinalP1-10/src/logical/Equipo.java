@@ -3,6 +3,8 @@ package logical;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.JOptionPane;
+
 public class Equipo {
 	private String codigo;
 	private String nombre;
@@ -25,7 +27,7 @@ public class Equipo {
 	private ArrayList<Jugador> misJugadores;
 	private ArrayList<Lanzador> misLanzadores;
 	private ArrayList<Jugador> alineacion;
-	
+
 	//Constructor
 	public Equipo(String codigo, String nombre, String estadio, Date fundacion, String ciudad, String manager) {
 		super();
@@ -51,7 +53,7 @@ public class Equipo {
 		misLanzadores = new ArrayList<Lanzador>(7);
 		alineacion = new ArrayList<Jugador>(9);
 	}
-	
+
 	//Getters and Setters
 	public String getCodigo() {
 		return codigo;
@@ -220,5 +222,104 @@ public class Equipo {
 	public void setAlineacion(ArrayList<Jugador> alineacion) {
 		this.alineacion = alineacion;
 	}
+
+	//Insertar Jugador
+	public void insertarJugador(Jugador jugador) {
+		int i = 0;
+		
+		for (Jugador x : misJugadores) {
+			if (jugador.getNoCamiseta() == x.getNoCamiseta()) {
+				i = jugador.getNoCamiseta()+1;
+				jugador.setNoCamiseta(i);
+			} else if (misJugadores.size() == misJugadores.lastIndexOf(x)+1) {
+				misJugadores.add(jugador);
+				JOptionPane.showMessageDialog(null, "Número de Camiseta cambiado a: "+jugador.getNoCamiseta()+", debido a coincidencia", null, JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+	}
+
+	//Eliminar Jugador
+	public void eliminarJugador(Jugador jugador) {
+		misJugadores.remove(jugador);
+	}
+
+	//Insertar Jugador en Alineacion
+	public void insertarJugadorAlineacion(Jugador jugador) {
+		if(jugador.lesionado == true) { 
+			JOptionPane.showMessageDialog(null, "JUGADOR LESIONADO", null, JOptionPane.ERROR_MESSAGE);
+
+		} else {
+			alineacion.add(jugador);
+		}
+	}
+
+	//Eliminar Jugador en Alineacion
+	public void eliminarJugadorAlineacion(Jugador jugador) {
+		alineacion.remove(jugador);
+	}
+
+	//Insertar Lanzadores en Alineacion de Lanzadores
+	public void insertarLanzador(Lanzador lanzador) {
+		if(lanzador.lesionado == true) { 
+			JOptionPane.showMessageDialog(null, "LANZADOR LESIONADO", null, JOptionPane.ERROR_MESSAGE);
+
+		} else {
+			misLanzadores.add(lanzador);
+		}
+	}
+
+	//Eliminar Lanzadores en Alineacion de Lanzadores
+	public void eliminarLanzador(Lanzador lanzador) {
+		misLanzadores.remove(lanzador);
+	}
+
+	//Buscar Jugador por Numero de Camiseta
+	public Jugador buscarJugadorNoCamiseta(int noCamiseta) {
+		Jugador player = null;
+		boolean encontrado = false;
+		int i = 0;
+
+		while (!encontrado && i < misJugadores.size()) {
+			if (misJugadores.get(i).getNoCamiseta() == noCamiseta) {
+				player = misJugadores.get(i);
+				encontrado = true;
+			}
+			i++;
+		}
+		return player;
+	}
+
+	//Buscar Jugador por Nombre
+	public Jugador buscarJugadorNombre(String nombre) {
+		Jugador player = null;
+		boolean encontrado = false;
+		int i = 0;
+
+		while (!encontrado && i < misJugadores.size()) {
+			if (misJugadores.get(i).getNombre().equalsIgnoreCase(nombre)) {
+				player = misJugadores.get(i);
+				encontrado = true;
+			}
+			i++;
+		}
+		return player;
+	}
+	
+	//Cantidad de Jugadores en mi Equipo (Lanzadores, Bateadores y Total)
+	public int[] cantJugadores() {
+		int[] cant = new int [3];
+		
+		for (Jugador jugador : misJugadores) {
+			if (jugador instanceof Lanzador) {
+				cant[0]++;
+			} else if (jugador instanceof Bateador) {
+				cant[1]++;
+			}
+		}
+		cant[2] = cant[0]+cant[1];
+		
+		return cant;
+	}
+	
 	
 }

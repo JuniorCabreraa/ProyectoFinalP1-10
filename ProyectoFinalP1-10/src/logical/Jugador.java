@@ -152,4 +152,10 @@ public class Jugador {
 		this.equipo = equipo;
 	}
 	
+	//Insertar Lesion
+	public void insertarLesion(Lesion lesion) {
+		misLesiones.add(lesion);
+		lesionado = true;
+	}
+	
 }

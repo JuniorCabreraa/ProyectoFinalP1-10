@@ -15,7 +15,7 @@ public class Liga {
 		listaJugadores = new ArrayList<Jugador>();
 		listaEquipos = new ArrayList<Equipo>();
 		listaPartidos = new ArrayList<Partido>();
-		cantPartidos = 0;
+		cantPartidos = 1;
 	}
 	
 	//Getters and Setters
@@ -52,15 +52,23 @@ public class Liga {
 	}
 	
 	//Insertar Jugador
-	
 	public void insertarJugador(Jugador jugador) {
 		listaJugadores.add(jugador);
-		
 	}
 	
-	//Buscar Jugador Por Nombre
+	//Insertar Equipo
+	public void insertarEquipo(Equipo equipo) {
+		listaEquipos.add(equipo);
+	}
 	
-	public Jugador buscarJugador(String name) {
+	//Insertar Partido
+	public void insertarPartido(Partido partido) {
+		listaPartidos.add(partido);
+		cantPartidos++;
+	}
+
+	//Buscar Jugador Por Nombre
+	public Jugador buscarJugadorPorNombre(String name) {
 		Jugador aux = null;
 		boolean found = false;
 		int x = 0;
@@ -74,22 +82,30 @@ public class Liga {
 		return aux;
 	}
 	
-	
-	//Insertar equipo
-	public void insertarEquipo(Equipo equipo) {
-		listaEquipos.add(equipo);
-	}
-	
-	//Buscar equipo por nombre
-	private Equipo buscarEquipo(String equipo) {
+	//Buscar Equipo por Nombre
+	public Equipo buscarEquipoPorNombre(String name) {
 		Equipo equipoEncontrado = null;
 		for (Equipo team : listaEquipos) {
-			if(team.getNombre().equalsIgnoreCase(equipo)) {
+			if(team.getNombre().equalsIgnoreCase(name)) {
 				equipoEncontrado = team; 
 			}
 		}
 		return equipoEncontrado;
 	}
-
-
+	
+	//Buscar Partidos por Numero
+	public Partido buscarPartidoPorNumero(int numero) {
+		Partido game = null;
+		boolean encontrado = false;
+		int i = 0;
+		
+		while (!encontrado && i <listaPartidos.size()) {
+			if (listaPartidos.get(i).getNoPartido() == numero) {
+				game = listaPartidos.get(i);
+				encontrado = true;
+			}
+			i++;
+		}
+		return game;
+	}
 }
