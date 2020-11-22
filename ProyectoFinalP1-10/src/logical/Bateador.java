@@ -1,10 +1,15 @@
 package logical;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 
-public class Bateador extends Jugador {
+public class Bateador extends Jugador implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5517869422426207514L;
 	private int turnosBate;
 	private int carreras;
 	private int hits;
@@ -189,6 +194,27 @@ public class Bateador extends Jugador {
 		BigDecimal x = slugging().add(porcentajeAlcanceBases());
 		BigDecimal ops = x.setScale(3, RoundingMode.HALF_UP);
 		return ops;
+	}
+	
+	//Poder Aislado (ISO)
+	public BigDecimal poderAislado() {
+		BigDecimal x = slugging().subtract(promedioBateo());
+		BigDecimal iso = x.setScale(3, RoundingMode.HALF_UP);
+		return iso;
+	}
+	
+	//Porcentaje de Fildeo
+	public BigDecimal porcentajeFildeo() {
+		float x = (((float)outsRealizados+asistencias)/(outsRealizados+asistencias+errores));
+		BigDecimal fielding = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP);
+		return fielding;
+	}
+	
+	//Factor de Alcance
+	public BigDecimal factorAlcance() {
+		float x = (((float)outsRealizados+asistencias)/9);
+		BigDecimal rf = new BigDecimal(x).setScale(2, RoundingMode.HALF_UP);
+		return rf;
 	}
 	
 }

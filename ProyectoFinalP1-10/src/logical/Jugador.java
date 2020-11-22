@@ -1,9 +1,14 @@
 package logical;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Jugador {
+public class Jugador implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7546744486660725131L;
 	protected String nombre;
 	protected Date nacimiento;
 	protected String altura;
@@ -167,7 +172,7 @@ public class Jugador {
 			if (present.after(lesion.getFinaliza()) == true) {
 				lesion.setActiva(false);
 			} 
-			if (misLesiones.indexOf(lesion) == (misLesiones.size()-1) && lesion.isActiva() == false) {
+			if ((misLesiones.indexOf(lesion) == misLesiones.size()-1) && lesion.isActiva() == false) {
 				lesionado = false;
 				saludable = true;
 			}

@@ -1,9 +1,14 @@
 package logical;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Liga {
+public class Liga implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2394678102697023660L;
 	private ArrayList<Jugador> listaJugadores;
 	private ArrayList<Equipo> listaEquipos;
 	private ArrayList<Partido> listaPartidos;

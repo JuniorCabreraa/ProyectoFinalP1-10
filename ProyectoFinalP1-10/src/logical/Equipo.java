@@ -1,5 +1,6 @@
 package logical;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -7,7 +8,11 @@ import java.util.Date;
 
 import javax.swing.JOptionPane;
 
-public class Equipo {
+public class Equipo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -116520969366731001L;
 	private String codigo;
 	private String nombre;
 	private String estadio;

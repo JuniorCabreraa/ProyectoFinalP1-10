@@ -1,9 +1,14 @@
 package logical;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Partido {
+public class Partido implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1925195659803900370L;
 	private int noPartido;
 	private Date fechaJuego;
 	private Equipo local;

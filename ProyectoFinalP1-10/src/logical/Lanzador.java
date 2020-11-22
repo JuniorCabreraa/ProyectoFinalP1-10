@@ -1,10 +1,15 @@
 package logical;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 
-public class Lanzador extends Jugador {
+public class Lanzador extends Jugador implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 10365944555153231L;
 	private int hitsPermitidos;
 	private int carrerasPermitidas;
 	private int carrerasLimpiasPermitidas;
