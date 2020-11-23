@@ -113,4 +113,79 @@ public class Liga implements Serializable{
 		}
 		return game;
 	}
+	
+	//Eliminar jugador
+	public void elimiarJugador(String nombre) {
+
+		int i = 0;
+		boolean encontrado = false;
+		
+		while (i<listaJugadores.size() && !encontrado) {
+		
+			if(listaJugadores.get(i).getNombre().equalsIgnoreCase(nombre)){
+				listaJugadores.remove(listaJugadores.get(i));
+				encontrado = true;
+			}else{
+				i++;
+			}
+		}
+		
+	}
+	
+	//Eliminar equipo
+	public void elimiarEquipo(String nombre) {
+
+		int i = 0;
+		boolean encontrado = false;
+		
+		while (i<listaEquipos.size() && !encontrado) {
+		
+			if(listaEquipos.get(i).getNombre().equalsIgnoreCase(nombre)){
+				listaEquipos.remove(listaEquipos.get(i));
+				encontrado = true;
+			}else{
+				i++;
+			}
+		}
+		
+	}
+	
+	//Eliminar partido
+	public void elimiarPartido(int noPartido) {
+
+		int i = 0;
+		boolean encontrado = false;
+		
+		while (i<listaPartidos.size() && !encontrado) {
+		
+			if(listaPartidos.get(i).getNoPartido() == noPartido){
+				listaPartidos.remove(listaPartidos.get(i));
+				encontrado = true;
+			}else{
+				i++;
+			}
+		}
+		
+	}
+	
+	//Buscar partido por uno de los equipos 
+	public int[] BuscarPartidoPorUnEquipo1(Equipo codigo) {
+		int[] partido = new int[1];
+		boolean encontrado = false;
+		int i = 0;
+		
+		while (!encontrado && i <listaPartidos.size()) {
+			if (listaPartidos.get(i).getVisitante() == codigo || listaPartidos.get(i).getLocal() == codigo) {
+				encontrado = true;
+				partido[0]++;
+				
+			}
+			i++;
+		}
+		return partido;
+	}
+	
+
+
+
 }
