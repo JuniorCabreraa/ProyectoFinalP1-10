@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.JOptionPane;
+
 public class Jugador implements Serializable{
 	/**
 	 * 
@@ -157,10 +159,31 @@ public class Jugador implements Serializable{
 		this.equipo = equipo;
 	}
 	
-	//Insertar Lesion
+	//Insertar Lesion (Tambien Elimina al Jugador de la Alineacion)
 	public void insertarLesion(Lesion lesion) {
-		misLesiones.add(lesion);
-		lesionado = true;
+		lesion.getJugador().verificarLesion();
+		if (lesion.getJugador().isLesionado() == false) {
+			misLesiones.add(lesion);
+			lesionado = true;
+			if (lesion.getJugador() instanceof Jugador) {
+				for (Jugador player : equipo.getAlineacion()) {
+					if (lesion.getJugador().equals(player)) {
+						equipo.eliminarJugadorAlineacion(lesion.getJugador());
+						JOptionPane.showMessageDialog(null, "Jugador Eliminado de Alineación", null, JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+			}
+			if (lesion.getJugador() instanceof Lanzador) {
+				for (Lanzador player : equipo.getMisLanzadores()) {
+					if (lesion.getJugador().equals(player)) {
+						equipo.eliminarLanzador((Lanzador) lesion.getJugador());
+						JOptionPane.showMessageDialog(null, "Lanzador Eliminado de Alineación", null, JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Ya está lesionado", null, JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 	
 	//Verificar Lesion

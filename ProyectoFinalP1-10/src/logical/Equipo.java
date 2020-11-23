@@ -58,9 +58,9 @@ public class Equipo implements Serializable{
 		ponches = 0;
 		basesRobadas = 0;
 		turnosBate = 0;
-		misJugadores = new ArrayList<Jugador>(25);
-		misLanzadores = new ArrayList<Lanzador>(7);
-		alineacion = new ArrayList<Jugador>(9);
+		misJugadores = new ArrayList<Jugador>();
+		misLanzadores = new ArrayList<Lanzador>();
+		alineacion = new ArrayList<Jugador>();
 	}
 
 	//Getters and Setters
@@ -246,7 +246,7 @@ public class Equipo implements Serializable{
 			if (jugador.getNoCamiseta() == x.getNoCamiseta()) {
 				JOptionPane.showMessageDialog(null, "Número de Camiseta No Disponible" , null, JOptionPane.ERROR_MESSAGE);
 				break;
-			} else if (misJugadores.indexOf(x) == (misJugadores.size()-1) && jugador.getNoCamiseta() != x.getNoCamiseta()) {
+			} else if (misJugadores.indexOf(x) == (misJugadores.size()-1) && jugador.getNoCamiseta() != x.getNoCamiseta() && (misJugadores.size() < 25)) {
 				misJugadores.add(jugador);
 			}
 		}
@@ -259,10 +259,10 @@ public class Equipo implements Serializable{
 
 	//Insertar Jugador en Alineacion
 	public void insertarJugadorAlineacion(Jugador jugador) {
-		if(jugador.lesionado == true) { 
+		if(jugador.isLesionado() == true) { 
 			JOptionPane.showMessageDialog(null, "JUGADOR LESIONADO", null, JOptionPane.ERROR_MESSAGE);
 
-		} else {
+		} else if (alineacion.size() < 9) {
 			alineacion.add(jugador);
 		}
 	}
@@ -274,10 +274,10 @@ public class Equipo implements Serializable{
 
 	//Insertar Lanzadores en Alineacion de Lanzadores
 	public void insertarLanzador(Lanzador lanzador) {
-		if(lanzador.lesionado == true) { 
+		if(lanzador.isLesionado() == true) { 
 			JOptionPane.showMessageDialog(null, "LANZADOR LESIONADO", null, JOptionPane.ERROR_MESSAGE);
 
-		} else {
+		} else if (misLanzadores.size() < 7) {
 			misLanzadores.add(lanzador);
 		}
 	}

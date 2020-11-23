@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.JOptionPane;
+
 public class Partido implements Serializable{
 	/**
 	 * 
@@ -34,11 +36,11 @@ public class Partido implements Serializable{
 		this.fechaJuego = fechaJuego;
 		this.local = local;
 		this.visitante = visitante;
-		alineacionLocal = new ArrayList<Jugador>(9);
-		alineacionVisitante =  new ArrayList<Jugador>(9);
+		alineacionLocal = new ArrayList<Jugador>();
+		alineacionVisitante =  new ArrayList<Jugador>();
 		this.estadio = estadio;
-		entradasLocal = new int[15];
-		entradasVisitante = new int[15];
+		entradasLocal = new int[11];
+		entradasVisitante = new int[11];
 		entradas = 0;
 		carrerasLocal = 0;
 		carrerasVisitante = 0;
@@ -184,5 +186,143 @@ public class Partido implements Serializable{
 
 	public void setTerminado(boolean terminado) {
 		this.terminado = terminado;
+	}
+	
+	//Terminar Partido
+	public void terminarPartido() {
+		if ((entradas >= 9 && carrerasLocal > carrerasVisitante) || (entradas >= 9 && carrerasLocal < carrerasVisitante)) {
+			terminado = true;
+		} else {
+			JOptionPane.showMessageDialog(null, "Se Debe Terminar de Jugar", null, JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	//Determinar Ganador del Partido
+	public Equipo ganador() {
+		Equipo winner = null;
+		
+		if (terminado = true && carrerasLocal > carrerasVisitante) {
+			winner = local;
+		} else if (terminado = true && carrerasLocal < carrerasVisitante) {
+			winner = visitante;
+		}
+		
+		return winner;
+	}
+	
+	//Agregar Carreras a Cada Entrada - (Vincular con la Pizarra en Visual)
+	public void carrerasPorEntrada(int local, int visitante, Equipo ataca) {
+		switch (entradas) {
+		case 1:
+			if (this.local.equals(ataca)) {
+				entradasLocal[0] = local;
+				carrerasLocal = local;
+			} else if (this.visitante.equals(ataca)) {
+				entradasVisitante[0] = visitante;
+				carrerasVisitante = visitante;
+			}
+			break;
+		case 2:
+			if (this.local.equals(ataca)) {
+				entradasLocal[1] = local;
+				carrerasLocal += local;
+			} else if (this.visitante.equals(ataca)) {
+				entradasVisitante[1] = visitante;
+				carrerasVisitante += visitante;
+			}
+			break;
+		case 3:
+			if (this.local.equals(ataca)) {
+				entradasLocal[2] = local;
+				carrerasLocal += local;
+			} else if (this.visitante.equals(ataca)) {
+				entradasVisitante[2] = visitante;
+				carrerasVisitante += visitante;
+			}
+			break;
+		case 4:
+			if (this.local.equals(ataca)) {
+				entradasLocal[3] = local;
+				carrerasLocal += local;
+			} else if (this.visitante.equals(ataca)) {
+				entradasVisitante[3] = visitante;
+				carrerasVisitante += visitante;
+			}
+			break;
+		case 5:
+			if (this.local.equals(ataca)) {
+				entradasLocal[4] = local;
+				carrerasLocal += local;
+			} else if (this.visitante.equals(ataca)) {
+				entradasVisitante[4] = visitante;
+				carrerasVisitante += visitante;
+			}
+			break;
+		case 6:
+			if (this.local.equals(ataca)) {
+				entradasLocal[5] = local;
+				carrerasLocal += local;
+			} else if (this.visitante.equals(ataca)) {
+				entradasVisitante[5] = visitante;
+				carrerasVisitante += visitante;
+			}
+			break;
+		case 7:
+			if (this.local.equals(ataca)) {
+				entradasLocal[6] = local;
+				carrerasLocal += local;
+			} else if (this.visitante.equals(ataca)) {
+				entradasVisitante[6] = visitante;
+				carrerasVisitante += visitante;
+			}
+			break;
+		case 8:
+			if (this.local.equals(ataca)) {
+				entradasLocal[7] = local;
+				carrerasLocal += local;
+			} else if (this.visitante.equals(ataca)) {
+				entradasVisitante[7] = visitante;
+				carrerasVisitante += visitante;
+			}
+			break;
+		case 9:
+			if (this.local.equals(ataca)) {
+				entradasLocal[8] = local;
+				carrerasLocal += local;
+			} else if (this.visitante.equals(ataca)) {
+				entradasVisitante[8] = visitante;
+				carrerasVisitante += visitante;
+			}
+			break;
+		case 10:
+			if (this.local.equals(ataca)) {
+				entradasLocal[9] = local;
+				carrerasLocal += local;
+			} else if (this.visitante.equals(ataca)) {
+				entradasVisitante[9] = visitante;
+				carrerasVisitante += visitante;
+			}
+			break;
+		case 11:
+			if (this.local.equals(ataca)) {
+				entradasLocal[10] = local;
+				carrerasLocal += local;
+			} else if (this.visitante.equals(ataca)) {
+				entradasVisitante[10] = visitante;
+				carrerasVisitante += visitante;
+			}
+			break;
+		case 12:
+			if (this.local.equals(ataca)) {
+				entradasLocal[11] = local;
+				carrerasLocal += local;
+			} else if (this.visitante.equals(ataca)) {
+				entradasVisitante[11] = visitante;
+				carrerasVisitante += visitante;
+			}
+			break;
+		default: JOptionPane.showMessageDialog(null, "ERROR", null, JOptionPane.ERROR_MESSAGE);
+			break;
+		}
 	}
 }
