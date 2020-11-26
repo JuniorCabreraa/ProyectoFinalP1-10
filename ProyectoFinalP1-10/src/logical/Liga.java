@@ -1,7 +1,21 @@
 package logical;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JOptionPane;
 
 
 public class Liga implements Serializable{
@@ -13,16 +27,27 @@ public class Liga implements Serializable{
 	private ArrayList<Equipo> listaEquipos;
 	private ArrayList<Partido> listaPartidos;
 	private int cantPartidos;
+	private static Liga league = null;
+	private ArrayList <Usuario> listaUsuarios;
+	private  Usuario loginUser;
+	private static boolean firsTime;
 	
 	//Constructor
-	public Liga() {
+	private Liga() {
 		super();
 		listaJugadores = new ArrayList<Jugador>();
 		listaEquipos = new ArrayList<Equipo>();
 		listaPartidos = new ArrayList<Partido>();
+		listaUsuarios = new ArrayList<Usuario>();
 		cantPartidos = 0;
 	}
-	
+	//SINGLETON
+	public static Liga getInstance() {
+		if(league == null) {
+			league = new Liga();
+		}
+		return league;
+	}
 	//Getters and Setters
 	public ArrayList<Jugador> getListaJugadores() {
 		return listaJugadores;
@@ -56,6 +81,43 @@ public class Liga implements Serializable{
 		this.cantPartidos = cantPartidos;
 	}
 	
+	public static Liga getLeague() {
+		return league;
+	}
+	
+	public static void setLeague(Liga league) {
+		Liga.league = league;
+	}
+	
+	public ArrayList<Usuario> getListaUsuarios() {
+		return listaUsuarios;
+	}
+	
+	public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
+		this.listaUsuarios = listaUsuarios;
+	}
+	
+	public Usuario getLoginUser() {
+		return loginUser;
+	}
+	
+	public void setLoginUser(Usuario loginUser) {
+		this.loginUser = loginUser;
+	}
+	
+	public static boolean isFirsTime() {
+		return firsTime;
+	}
+	
+	public static void setFirsTime(boolean firsTime) {
+		Liga.firsTime = firsTime;
+	}
+	
+	//Insertar Usuario
+	public void insertarUsuario(Usuario user) {
+		listaUsuarios.add(user);
+	}
+	
 	//Insertar Jugador
 	public void insertarJugador(Jugador jugador) {
 		listaJugadores.add(jugador);
@@ -70,6 +132,11 @@ public class Liga implements Serializable{
 	public void insertarPartido(Partido partido) {
 		listaPartidos.add(partido);
 		cantPartidos++;
+	}
+	
+	//Eliminar Usuario
+	public void eliminarUsuario(Usuario user) {
+		listaUsuarios.remove(user);
 	}
 	
 	//Eliminar Jugador
@@ -141,5 +208,78 @@ public class Liga implements Serializable{
 		}
 		return partidos;
 	}
-
+	
+	//Verificar Usuario
+	public boolean confirmLogin(String usuario, String password) {
+		boolean login = false;
+		
+		for (Usuario user : listaUsuarios) {
+			if(user.getUsername().equals(usuario) && user.getPassword().equals(password)){
+				loginUser = user;
+				login = true;
+			}
+		}
+		return login;
+	}
+	
+	//Guardar Datos
+	public void saveData() {
+		FileOutputStream data;
+		ObjectOutputStream dataObj;
+		try {
+			data = new FileOutputStream("Data.dat");
+			dataObj = new ObjectOutputStream(data);
+			dataObj.writeObject(league);
+			data.close();
+			dataObj.close();
+			
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, e, "File Not Found", JOptionPane.INFORMATION_MESSAGE);
+			
+		} catch (IOException a) {
+			JOptionPane.showMessageDialog(null, a, "I/O", JOptionPane.INFORMATION_MESSAGE);
+			
+		}
+	}
+	
+	//Cargar Datos
+	public void loadData() {
+		FileInputStream data;
+		ObjectInputStream dataObj;
+		
+		try {
+			data = new FileInputStream("Data.dat");
+			dataObj = new ObjectInputStream(data);
+			Liga db = (Liga) dataObj.readObject();
+			Liga.setLeague(db);
+			data.close();
+			dataObj.close();
+			
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, e, "File Not Found", JOptionPane.INFORMATION_MESSAGE);
+			
+		} catch (IOException a) {
+			JOptionPane.showMessageDialog(null, a, "I/O", JOptionPane.INFORMATION_MESSAGE);
+			
+		} catch (ClassNotFoundException z) {
+			JOptionPane.showMessageDialog(null, z, "Class Not Found", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+	
+	//Reproducir Sonido
+	public void reproducirSonido(String nombreSonido){
+		try {
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch(UnsupportedAudioFileException ex) {
+			System.out.println("Error al reproducir el sonido.");
+			
+		} catch (IOException e) {
+			System.out.println("Error al reproducir el sonido.2");
+		} catch (LineUnavailableException e) {
+			System.out.println("Error al reproducir el sonido.3");
+		}
+	}
 }
