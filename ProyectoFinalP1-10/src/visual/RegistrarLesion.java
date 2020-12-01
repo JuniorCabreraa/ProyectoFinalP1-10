@@ -163,9 +163,10 @@ public class RegistrarLesion extends JDialog {
 				public void itemStateChanged(ItemEvent e) {
 					if (cbxEquipo.getSelectedIndex() != 0) {
 						team = Liga.getInstance().buscarEquipoPorNombre(cbxEquipo.getSelectedItem().toString());
-						for (Jugador jug : team.getMisJugadores()) {
-							cbxJugador.addItem(jug.getNombre());
-						}
+						llenarCbxJugadores();
+					} else if (cbxEquipo.getSelectedIndex() == 0) {
+						cbxJugador.removeAllItems();
+						cbxJugador.addItem("<Seleccione>");
 					}
 				}
 			});
@@ -254,8 +255,16 @@ public class RegistrarLesion extends JDialog {
 	}
 
 	public void llenarCbxEquipos() {
-		for (Equipo team : Liga.getInstance().getListaEquipos()) {
-			cbxEquipo.addItem(team.getNombre());
+		for (Equipo tea : Liga.getInstance().getListaEquipos()) {
+			cbxEquipo.addItem(tea.getNombre());
+		}
+	}
+	
+	public void llenarCbxJugadores() {
+		cbxJugador.removeAllItems();
+		cbxJugador.addItem("<Seleccione>");
+		for (Jugador player : team.getMisJugadores()) {
+			cbxJugador.addItem(player.getNombre());
 		}
 	}
 }

@@ -23,6 +23,8 @@ import javax.swing.JMenu;
 import javax.swing.ImageIcon;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.ParseException;
+
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
@@ -124,6 +126,12 @@ public class Principal extends JFrame {
 				menuBar.add(mnNewMenu);
 				{
 					mntmRegistrarUsuario = new JMenuItem("Registrar Nuevo Usuario");
+					mntmRegistrarUsuario.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							RegistrarUsuario regUser = new RegistrarUsuario();
+							regUser.setVisible(true);
+						}
+					});
 					mntmRegistrarUsuario.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/add.png")));
 					mnNewMenu.add(mntmRegistrarUsuario);
 				}
@@ -164,6 +172,19 @@ public class Principal extends JFrame {
 				}
 				{
 					mntmNewMenuItem_2 = new JMenuItem("Programar Partidos");
+					mntmNewMenuItem_2.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							RegistrarPartido regGame;
+							try {
+								regGame = new RegistrarPartido();
+								regGame.setVisible(true);
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+						}
+					});
 					mntmNewMenuItem_2.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/add.png")));
 					mnNewMenu_1.add(mntmNewMenuItem_2);
 				}
@@ -174,6 +195,18 @@ public class Principal extends JFrame {
 				menuBar.add(mnNewMenu_3);
 				{
 					mntmNewMenuItem_4 = new JMenuItem("Crear Equipo");
+					mntmNewMenuItem_4.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							RegistrarEquipo regTeam;
+							try {
+								regTeam = new RegistrarEquipo();
+								regTeam.setVisible(true);
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+					});
 					mntmNewMenuItem_4.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/add.png")));
 					mnNewMenu_3.add(mntmNewMenuItem_4);
 				}
@@ -194,6 +227,18 @@ public class Principal extends JFrame {
 				menuBar.add(mnNewMenu_4);
 				{
 					mntmNewMenuItem_7 = new JMenuItem("Crear Jugador");
+					mntmNewMenuItem_7.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							RegistrarJugador regPlayer;
+							try {
+								regPlayer = new RegistrarJugador();
+								regPlayer.setVisible(true);
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+					});
 					mntmNewMenuItem_7.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/add.png")));
 					mnNewMenu_4.add(mntmNewMenuItem_7);
 				}
@@ -203,6 +248,18 @@ public class Principal extends JFrame {
 					mnNewMenu_4.add(mnNewMenu_5);
 					{
 						mntmNewMenuItem_8 = new JMenuItem("Insertar Lesi\u00F3n");
+						mntmNewMenuItem_8.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								RegistrarLesion regBroken;
+								try {
+									regBroken = new RegistrarLesion();
+									regBroken.setVisible(true);
+								} catch (ParseException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							}
+						});
 						mntmNewMenuItem_8.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/add.png")));
 						mnNewMenu_5.add(mntmNewMenuItem_8);
 					}

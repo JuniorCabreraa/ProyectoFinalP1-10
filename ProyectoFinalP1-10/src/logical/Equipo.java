@@ -246,10 +246,10 @@ public class Equipo implements Serializable{
 			if (jugador.getNoCamiseta() == x.getNoCamiseta()) {
 				JOptionPane.showMessageDialog(null, "Número de Camiseta No Disponible" , null, JOptionPane.ERROR_MESSAGE);
 				break;
-			} else if (misJugadores.indexOf(x) == (misJugadores.size()-1) && jugador.getNoCamiseta() != x.getNoCamiseta() && (misJugadores.size() < 25)) {
-				misJugadores.add(jugador);
-				Liga.getInstance().insertarJugador(jugador);
 			}
+		}
+		if (misJugadores.size() < 25) {
+			misJugadores.add(jugador);
 		}
 	}
 

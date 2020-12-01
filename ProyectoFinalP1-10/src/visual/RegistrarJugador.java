@@ -305,6 +305,7 @@ public class RegistrarJugador extends JDialog {
 			        Date naci = null;
 			        String lateralidad = null;
 			        Jugador player = null;
+			        Equipo team = null;
 			        if (checkAmbidex.isSelected()) {
 						lateralidad = "Ambidextro";
 					} else if (checkDiestro.isSelected()) {
@@ -322,15 +323,17 @@ public class RegistrarJugador extends JDialog {
 							// TODO Auto-generated catch block
 							JOptionPane.showMessageDialog(null, e1, "Error Parseando Fecha", JOptionPane.ERROR_MESSAGE);
 						}
-						Equipo team = Liga.getInstance().buscarEquipoPorNombre(cbxEquipo.getSelectedItem().toString());;
+						team = Liga.getInstance().buscarEquipoPorNombre(cbxEquipo.getSelectedItem().toString());;
 						if (cbxPosicion.getSelectedIndex() == 1) {
-							player = new Lanzador(txtNombre.getText(), naci, Integer.valueOf((String) spnAltura.getValue()), Integer.valueOf((String) spnPeso.getValue()), Integer.valueOf((String) spnCamiseta.getValue()), lateralidad, cbxPosicion.getSelectedItem().toString(), team);
+							player = new Lanzador(txtNombre.getText(), naci, Integer.valueOf(spnAltura.getValue().toString()), Integer.valueOf(spnPeso.getValue().toString()), Integer.valueOf(spnCamiseta.getValue().toString()), lateralidad, cbxPosicion.getSelectedItem().toString(), team);
 							team.insertarJugador(player);
+							Liga.getInstance().insertarJugador(player);
 							JOptionPane.showMessageDialog(null, "Agregado Satisfactoriamente", null, JOptionPane.WARNING_MESSAGE);
 							clean();
 						} else {
-							player = new Bateador(txtNombre.getText(), naci, Integer.valueOf((String) spnAltura.getValue()), Integer.valueOf((String) spnPeso.getValue()), Integer.valueOf((String) spnCamiseta.getValue()), lateralidad, cbxPosicion.getSelectedItem().toString(), team);
+							player = new Bateador(txtNombre.getText(), naci, Integer.valueOf(spnAltura.getValue().toString()), Integer.valueOf(spnPeso.getValue().toString()), Integer.valueOf(spnCamiseta.getValue().toString()), lateralidad, cbxPosicion.getSelectedItem().toString(), team);
 							team.insertarJugador(player);
+							Liga.getInstance().insertarJugador(player);
 							JOptionPane.showMessageDialog(null, "Agregado Satisfactoriamente", null, JOptionPane.WARNING_MESSAGE);
 							clean();
 						}
