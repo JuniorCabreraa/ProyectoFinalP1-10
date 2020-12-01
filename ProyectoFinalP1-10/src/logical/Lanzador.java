@@ -26,7 +26,7 @@ public class Lanzador extends Jugador implements Serializable{
 	private int outs;
 	
 	//Constructor
-	public Lanzador(String nombre, Date nacimiento, float altura, int peso, int noCamiseta, String bat_lanz,
+	public Lanzador(String nombre, Date nacimiento, int altura, int peso, int noCamiseta, String bat_lanz,
 			String posicion, Equipo equipo) {
 		super(nombre, nacimiento, altura, peso, noCamiseta, bat_lanz, posicion, equipo);
 		hitsPermitidos = 0;
