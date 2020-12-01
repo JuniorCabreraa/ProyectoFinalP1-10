@@ -248,6 +248,7 @@ public class Equipo implements Serializable{
 				break;
 			} else if (misJugadores.indexOf(x) == (misJugadores.size()-1) && jugador.getNoCamiseta() != x.getNoCamiseta() && (misJugadores.size() < 25)) {
 				misJugadores.add(jugador);
+				Liga.getInstance().insertarJugador(jugador);
 			}
 		}
 	}

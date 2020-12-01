@@ -27,7 +27,7 @@ public class Bateador extends Jugador implements Serializable{
 	private int elevadosSacrificios;
 	
 	//Constructor
-	public Bateador(String nombre, Date nacimiento, String altura, float peso, int noCamiseta, String bat_lanz,
+	public Bateador(String nombre, Date nacimiento, float altura, int peso, int noCamiseta, String bat_lanz,
 			String posicion, Equipo equipo) {
 		super(nombre, nacimiento, altura, peso, noCamiseta, bat_lanz, posicion, equipo);
 		turnosBate = 0;

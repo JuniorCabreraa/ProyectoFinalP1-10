@@ -31,6 +31,7 @@ import java.io.ObjectInputStream;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 
+@SuppressWarnings({ "serial", "unused" })
 public class Sesion extends JFrame {
 
 	private JPanel contentPane;
@@ -120,9 +121,9 @@ public class Sesion extends JFrame {
 						dispose();
 					} else {
 						Liga.getInstance().reproducirSonido("src/Sonidos/error.wav");
-						lblError.setText("Usuario o Contraseña Incorrecto");
 						textUser.setText(null);
 						txtPassword.setText(null);
+						lblError.setText("Usuario o Contraseña Incorrecto");
 					}
 				}
 			});

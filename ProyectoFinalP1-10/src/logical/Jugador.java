@@ -13,8 +13,8 @@ public class Jugador implements Serializable{
 	private static final long serialVersionUID = 7546744486660725131L;
 	protected String nombre;
 	protected Date nacimiento;
-	protected String altura;
-	protected float peso;
+	protected float altura;
+	protected int peso;
 	protected int noCamiseta;
 	protected String bat_lanz;
 	protected String posicion;
@@ -27,7 +27,7 @@ public class Jugador implements Serializable{
 	protected Equipo equipo;
 	
 	//Constructor
-	public Jugador(String nombre, Date nacimiento, String altura, float peso, int noCamiseta, String bat_lanz,
+	public Jugador(String nombre, Date nacimiento, float altura, int peso, int noCamiseta, String bat_lanz,
 			String posicion, Equipo equipo) {
 		super();
 		this.nombre = nombre;
@@ -63,19 +63,19 @@ public class Jugador implements Serializable{
 		this.nacimiento = nacimiento;
 	}
 
-	public String getAltura() {
+	public float getAltura() {
 		return altura;
 	}
 
-	public void setAltura(String altura) {
+	public void setAltura(float altura) {
 		this.altura = altura;
 	}
 
-	public float getPeso() {
+	public int getPeso() {
 		return peso;
 	}
 
-	public void setPeso(float peso) {
+	public void setPeso(int peso) {
 		this.peso = peso;
 	}
 
