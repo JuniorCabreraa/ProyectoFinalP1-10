@@ -104,7 +104,7 @@ public class RegistrarJugador extends JDialog {
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(new Color(0, 51, 102));
-		contentPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+		contentPanel.setBorder(new LineBorder(new Color(204, 204, 204)));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		{
