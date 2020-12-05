@@ -1074,9 +1074,9 @@ public class SimuladorPartido extends JDialog {
 							player.setTriples(player.getTriples()+1);
 							gamePlay.getLocal().setTriples(gamePlay.getLocal().getTriples()+1);
 							
-							i = Integer.parseInt(txtHitsVisi.getText().trim());
+							i = Integer.parseInt(txtHistLocal.getText().trim());
 							i = i + 1;
-							txtHitsVisi.setText(""+i);
+							txtHistLocal.setText(""+i);
 						}
 					}
 				});
@@ -2125,23 +2125,27 @@ public class SimuladorPartido extends JDialog {
 		}
 		{
 			lblFondaso = new JLabel("");
-			lblFondaso.setIcon(new ImageIcon(SimuladorPartido.class.getResource("/Imagenes/anotherballWallpaper.jpg")));
-			lblFondaso.setBounds(-68, 0, 1229, 768);
+			lblFondaso.setIcon(new ImageIcon(SimuladorPartido.class.getResource("/Imagenes/anotherOne.jpg")));
+			lblFondaso.setBounds(-20, -50, 1200, 800);
 			contentPanel.add(lblFondaso);
 		}
 	}
 
 	public void llenarBateadoresLocal() {
 		for (Jugador x : gamePlay.getAlineacionLocal()) {
-			cbxBateadorLocal.addItem(x.getNombre());
-			cbxCarrerasLocal.addItem(x.getNombre());
+			if (x instanceof Bateador) {
+				cbxBateadorLocal.addItem(x.getNombre());
+				cbxCarrerasLocal.addItem(x.getNombre());
+			}
 		}
 	}
 
 	public void llenarBateadoresVisitante() {
 		for (Jugador x : gamePlay.getAlineacionVisitante()) {
+			if (x instanceof Bateador) {
 			cbxBateadorVisitante.addItem(x.getNombre());
 			cbxCarreraVis.addItem(x.getNombre());
+			}
 		}
 	}
 
@@ -2212,7 +2216,7 @@ public class SimuladorPartido extends JDialog {
 	public void llenarPizarraVisitante() {
 		model.setRowCount(0);
 		filas = new Object[model.getColumnCount()];
-		int[] x = new int[11]; 
+		int[] x = new int[12]; 
 		x = gamePlay.getEntradasVisitante();
 		
 		filas[0] = gamePlay.getVisitante().getNombre();
@@ -2227,13 +2231,14 @@ public class SimuladorPartido extends JDialog {
 		filas[9] = x[8];
 		filas[10] = x[9];
 		filas[11] = x[10];
+		filas[12] = x[11];
 		model.addRow(filas);
 	}
 	
 	public void llenarPizarraLocal() {
 		model.setRowCount(1);
 		filas = new Object[model.getColumnCount()];
-		int[] x = new int[11]; 
+		int[] x = new int[12]; 
 		x = gamePlay.getEntradasLocal();
 		
 		filas[0] = gamePlay.getLocal().getNombre();
@@ -2248,6 +2253,7 @@ public class SimuladorPartido extends JDialog {
 		filas[9] = x[8];
 		filas[10] = x[9];
 		filas[11] = x[10];
+		filas[12] = x[11];
 		model.addRow(filas);	
 		
 		TableColumnModel columnModel = table.getColumnModel();

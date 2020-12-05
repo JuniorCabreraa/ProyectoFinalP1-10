@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -64,7 +65,7 @@ public class ListaPartidos extends JDialog {
 		setModal(true);
 		setResizable(false);
 		setTitle("Listado de Partidos");
-		setBounds(100, 100, 640, 368);
+		setBounds(100, 100, 763, 368);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
@@ -75,17 +76,22 @@ public class ListaPartidos extends JDialog {
 			JPanel panel = new JPanel();
 			panel.setBackground(Color.WHITE);
 			panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-			panel.setBounds(10, 11, 604, 257);
+			panel.setBounds(10, 11, 721, 257);
 			contentPanel.add(panel);
 			panel.setLayout(null);
 
 			JScrollPane scrollPane = new JScrollPane();
 			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-			scrollPane.setBounds(10, 11, 584, 235);
+			scrollPane.setBounds(10, 11, 701, 235);
 			panel.add(scrollPane);
 
+
+			tableModel = new DefaultTableModel();
+			String[] columnNames = {"No Partido","Fecha De Juego", "Equipo Local", "Equipo Visitante", "Ganador"};
+			tableModel.setColumnIdentifiers(columnNames);
 			table = new JTable();
 			table.setBackground(Color.WHITE);
+			table.setModel(tableModel);
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			table.addMouseListener(new MouseAdapter() {
 				@Override
@@ -99,9 +105,6 @@ public class ListaPartidos extends JDialog {
 					}
 				}
 			});
-			tableModel = new DefaultTableModel();
-			String[] columnNames = {"No Partido","Fecha De Juego", "Equipo Local", "Equipo Visitante"};
-			tableModel.setColumnIdentifiers(columnNames);
 			loadPartido();
 			scrollPane.setViewportView(table);
 		}
@@ -176,13 +179,18 @@ public class ListaPartidos extends JDialog {
 	public static void loadPartido() {
 		tableModel.setRowCount(0);
 		fila = new Object[tableModel.getColumnCount()];
+		String df = "dd-MM-yyyy"; 
+        SimpleDateFormat form = new SimpleDateFormat(df);
 
 		for (Partido aux : Liga.getInstance().getListaPartidos()) {
-			fila[0] = aux.getNoPartido();
-			fila[1] = aux.getFechaJuego();
-			fila[2] = aux.getLocal().getNombre();
-			fila[3] = aux.getVisitante().getNombre();
-			tableModel.addRow(fila);
+			if (aux.isTerminado()) {
+				fila[0] = aux.getNoPartido();
+				fila[1] = form.format(aux.getFechaJuego())+" "+aux.getHoraJuego();
+				fila[2] = aux.getLocal().getNombre();
+				fila[3] = aux.getVisitante().getNombre();
+				fila[4] = aux.ganador().getNombre();
+				tableModel.addRow(fila);
+			}
 		}
 
 
@@ -190,11 +198,11 @@ public class ListaPartidos extends JDialog {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.getTableHeader().setReorderingAllowed(false);
 		TableColumnModel columnModel = table.getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(115);
-		columnModel.getColumn(1).setPreferredWidth(140);
-		columnModel.getColumn(2).setPreferredWidth(163);
-		columnModel.getColumn(3).setPreferredWidth(163);
-
+		columnModel.getColumn(0).setPreferredWidth(82);
+		columnModel.getColumn(1).setPreferredWidth(182);
+		columnModel.getColumn(2).setPreferredWidth(145);
+		columnModel.getColumn(3).setPreferredWidth(145);
+		columnModel.getColumn(4).setPreferredWidth(145);
 
 	}
 }

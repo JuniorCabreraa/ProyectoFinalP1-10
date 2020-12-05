@@ -64,7 +64,6 @@ public class Principal extends JFrame {
 	private JMenu mnNewMenu_1;
 	private JMenu mnNewMenu_2;
 	private JMenuItem mntmNewMenuItem;
-	private JMenuItem mntmNewMenuItem_1;
 	private JMenuItem mntmNewMenuItem_2;
 	private JMenuItem mntmNewMenuItem_3;
 	private JMenu mnNewMenu_3;
@@ -219,12 +218,7 @@ public class Principal extends JFrame {
 						mnNewMenu_2.add(mntmNewMenuItem);
 					}
 					{
-						mntmNewMenuItem_1 = new JMenuItem("Terminados");
-						mntmNewMenuItem_1.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/list.png")));
-						mnNewMenu_2.add(mntmNewMenuItem_1);
-					}
-					{
-						mntmNewMenuItem_3 = new JMenuItem("Todos");
+						mntmNewMenuItem_3 = new JMenuItem("Terminados");
 						mntmNewMenuItem_3.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
 								try {
@@ -501,6 +495,9 @@ public class Principal extends JFrame {
 						Date last = parseFecha(letsPlay);
 				        Date ahora = new Date();
 				        if (ahora.after(last)) {
+							btnEliminar.setEnabled(false);
+							btnRepro.setEnabled(false);
+							btnIniciar.setEnabled(false);
 				        	panelCalendario.setVisible(false);
 				        	AlineacionJuego aliJue = new AlineacionJuego(game);
 				        	aliJue.setVisible(true);
@@ -544,7 +541,9 @@ public class Principal extends JFrame {
 							}
 							//calendarioPartidos(0);
 							//cbxDate.setSelectedIndex(0);
+							btnEliminar.setEnabled(false);
 							btnRepro.setEnabled(false);
+							btnIniciar.setEnabled(false);
 							game = null;
 							letsPlay = null;
 						}
@@ -567,6 +566,8 @@ public class Principal extends JFrame {
 							calendarioPartidos(0);
 							cbxDate.setSelectedIndex(0);
 							btnEliminar.setEnabled(false);
+							btnRepro.setEnabled(false);
+							btnIniciar.setEnabled(false);
 							game = null;
 							letsPlay = null;
 						}

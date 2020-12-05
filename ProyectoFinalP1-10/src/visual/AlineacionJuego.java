@@ -268,7 +268,7 @@ public class AlineacionJuego extends JDialog {
 						boolean encontrado = false;
 						for (Jugador x : game.getLocal().getAlineacion()) {
 							if (playerLocal.equals(x)) {
-								JOptionPane.showMessageDialog(null, "Jugador Pertenece a la Alineacion", null, JOptionPane.ERROR_MESSAGE);
+								JOptionPane.showMessageDialog(null, "Jugador Pertenece a la Alineacion", null, JOptionPane.INFORMATION_MESSAGE);
 								encontrado = true;
 								break;
 							}
@@ -278,7 +278,7 @@ public class AlineacionJuego extends JDialog {
 							llenarLocalRoster();
 						}
 						if (game.getLocal().getAlineacion().size() >= 9) {
-							JOptionPane.showMessageDialog(null, "Alineación Local Completa", null, JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Alineación Local Completa", null, JOptionPane.INFORMATION_MESSAGE);
 						}
 						btnAgregarLocal.setEnabled(false);
 					}
@@ -346,7 +346,7 @@ public class AlineacionJuego extends JDialog {
 		{
 			JLabel lblFondo = new JLabel("");
 			lblFondo.setIcon(new ImageIcon(AlineacionJuego.class.getResource("/Imagenes/hittedInTheHead.gif")));
-			lblFondo.setBounds(-5, 27, 800, 600);
+			lblFondo.setBounds(-5, 34, 800, 600);
 			contentPanel.add(lblFondo);
 		}
 		{
@@ -359,8 +359,10 @@ public class AlineacionJuego extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if (game.getLocal().getAlineacion().size() == 9 && game.getVisitante().getAlineacion().size() == 9) {
-							game.getAlineacionLocal().addAll(game.getLocal().getAlineacion());
-							game.getAlineacionVisitante().addAll(game.getVisitante().getAlineacion());
+							if (game.getAlineacionLocal().isEmpty() && game.getAlineacionVisitante().isEmpty()) {
+								game.getAlineacionLocal().addAll(game.getLocal().getAlineacion());
+								game.getAlineacionVisitante().addAll(game.getVisitante().getAlineacion());
+							}
 							JOptionPane.showMessageDialog(null, "A JUGAR!!!", null, JOptionPane.INFORMATION_MESSAGE);
 							dispose();
 							SimuladorPartido simuPart = new SimuladorPartido(game);
