@@ -29,6 +29,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Component;
 import javax.swing.Box;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 @SuppressWarnings("serial")
 public class RegistrarUsuario extends JDialog {
@@ -56,6 +58,12 @@ public class RegistrarUsuario extends JDialog {
 	 * Create the dialog.
 	 */
 	public RegistrarUsuario() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				txtUser.grabFocus();
+			}
+		});
 		setModal(true);
 		setResizable(false);
 		setUndecorated(true);

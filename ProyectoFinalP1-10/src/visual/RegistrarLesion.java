@@ -30,8 +30,6 @@ import logical.Liga;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -71,6 +69,7 @@ public class RegistrarLesion extends JDialog {
 			@Override
 			public void windowOpened(WindowEvent arg0) {
 				llenarCbxEquipos();
+				txtFecha.grabFocus();
 			}
 		});
 		setUndecorated(true);
@@ -159,9 +158,9 @@ public class RegistrarLesion extends JDialog {
 		}
 		{
 			cbxEquipo = new JComboBox<String>();
-			cbxEquipo.addItemListener(new ItemListener() {
-				public void itemStateChanged(ItemEvent e) {
-					if (cbxEquipo.getSelectedIndex() != 0) {
+			cbxEquipo.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (cbxEquipo.getSelectedIndex() > 0) {
 						team = Liga.getInstance().buscarEquipoPorNombre(cbxEquipo.getSelectedItem().toString());
 						llenarCbxJugadores();
 					} else if (cbxEquipo.getSelectedIndex() == 0) {
@@ -178,10 +177,6 @@ public class RegistrarLesion extends JDialog {
 		}
 		{
 			cbxCategoria = new JComboBox<String>();
-			cbxCategoria.addItemListener(new ItemListener() {
-				public void itemStateChanged(ItemEvent arg0) {
-				}
-			});
 			cbxCategoria.setBackground(Color.WHITE);
 			cbxCategoria.setFont(new Font("Tahoma", Font.PLAIN, 13));
 			cbxCategoria.setModel(new DefaultComboBoxModel<String>(new String[] {"<Seleccione>", "Cabeza", "Cuello", "Hombro", "Brazo", "Mano", "Costillas", "Pelvis", "Pierna", "Tobillo", "Pie"}));
@@ -225,9 +220,10 @@ public class RegistrarLesion extends JDialog {
 						}
 						player = Liga.getInstance().buscarJugadorPorNombre(cbxJugador.getSelectedItem().toString());
 						broken = new Lesion(player, team, cbxCategoria.getSelectedItem().toString(), txtDiag.getText(), culmi);
-						player.insertarLesion(broken);
-						JOptionPane.showMessageDialog(null, "Agregado Satisfactoriamente", null, JOptionPane.WARNING_MESSAGE);
-						clean();
+						if (player.insertarLesion(broken) == true) {
+							JOptionPane.showMessageDialog(null, "Agregado Satisfactoriamente", null, JOptionPane.WARNING_MESSAGE);
+							clean();
+						}
 					}
 				}
 			});
@@ -264,7 +260,9 @@ public class RegistrarLesion extends JDialog {
 		cbxJugador.removeAllItems();
 		cbxJugador.addItem("<Seleccione>");
 		for (Jugador player : team.getMisJugadores()) {
-			cbxJugador.addItem(player.getNombre());
+			if (player.isLesionado() == false) {
+				cbxJugador.addItem(player.getNombre());
+			}
 		}
 	}
 }

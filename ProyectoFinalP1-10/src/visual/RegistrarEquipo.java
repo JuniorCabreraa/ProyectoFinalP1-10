@@ -27,6 +27,8 @@ import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.border.LineBorder;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 @SuppressWarnings("serial")
 public class RegistrarEquipo extends JDialog {
@@ -68,6 +70,12 @@ public class RegistrarEquipo extends JDialog {
 	 * @throws ParseException 
 	 */
 	public RegistrarEquipo() throws ParseException {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				txtFundacion.grabFocus();
+			}
+		});
 		setModal(true);
 		setResizable(false);
 		setUndecorated(true);

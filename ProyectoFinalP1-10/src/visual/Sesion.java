@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 @SuppressWarnings({ "serial", "unused" })
 public class Sesion extends JFrame {
@@ -96,6 +98,12 @@ public class Sesion extends JFrame {
 	 * Create the frame.
 	 */
 	public Sesion() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent arg0) {
+				textUser.grabFocus();
+			}
+		});
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Sesion.class.getResource("/Imagenes/Llave.png")));
 		setUndecorated(true);
 		setFont(new Font("Times New Roman", Font.PLAIN, 14));

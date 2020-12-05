@@ -11,12 +11,10 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-import logical.Equipo;
 import logical.Liga;
 import logical.Partido;
 
@@ -26,7 +24,15 @@ import javax.swing.JScrollPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ListSelectionModel;
+import java.awt.Color;
+import javax.swing.ImageIcon;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
+import java.awt.Toolkit;
+import javax.swing.ScrollPaneConstants;
 
+@SuppressWarnings("serial")
 public class ListaPartidos extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -37,14 +43,10 @@ public class ListaPartidos extends JDialog {
 	private JButton btnEliminar;
 	private int numero;
 
-	Equipo equipo;
-
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		Liga.getInstance().loadData();
-		
 		try {
 			ListaPartidos dialog = new ListaPartidos();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -58,35 +60,42 @@ public class ListaPartidos extends JDialog {
 	 * Create the dialog.
 	 */
 	public ListaPartidos() throws ParseException{
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ListaPartidos.class.getResource("/Imagenes/estadioteam.png")));
+		setModal(true);
+		setResizable(false);
 		setTitle("Listado de Partidos");
-		setBounds(100, 100, 640, 300);
+		setBounds(100, 100, 640, 368);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPanel.setBackground(Color.WHITE);
+		contentPanel.setBorder(new LineBorder(new Color(204, 204, 204)));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		{
 			JPanel panel = new JPanel();
-			panel.setBorder(new TitledBorder(null, "Listado de Partidos", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel.setBounds(10, 11, 604, 206);
+			panel.setBackground(Color.WHITE);
+			panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+			panel.setBounds(10, 11, 604, 257);
 			contentPanel.add(panel);
 			panel.setLayout(null);
 
 			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setBounds(10, 22, 584, 173);
+			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			scrollPane.setBounds(10, 11, 584, 235);
 			panel.add(scrollPane);
 
 			table = new JTable();
+			table.setBackground(Color.WHITE);
+			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			table.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-
-					/*String country;
-					int delivery;*/
+					
 					if(table.getSelectedRow()>=0){
 						btnEliminar.setEnabled(true);
 						btnModificar.setEnabled(true);
 						int index = table.getSelectedRow();
-						numero = (int)table.getModel().getValueAt(index, 1);
+						numero = (int) table.getModel().getValueAt(index, 0);
 					}
 				}
 			});
@@ -102,6 +111,8 @@ public class ListaPartidos extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
 			btnModificar = new JButton("Modificar");
+			btnModificar.setIcon(new ImageIcon(ListaPartidos.class.getResource("/Imagenes/modify.png")));
+			btnModificar.setBackground(Color.WHITE);
 			btnModificar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					RegistrarPartido mod = null;
@@ -123,9 +134,11 @@ public class ListaPartidos extends JDialog {
 			getRootPane().setDefaultButton(btnModificar);
 			{
 				btnEliminar = new JButton("Eliminar");
+				btnEliminar.setIcon(new ImageIcon(ListaPartidos.class.getResource("/Imagenes/change.png")));
+				btnEliminar.setBackground(Color.WHITE);
 				btnEliminar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-
+				
 						Partido aux = Liga.getInstance().buscarPartidoPorNumero(numero);
 
 						int delete = JOptionPane.showConfirmDialog(null, "Realmente desea Eliminar el Partido: " + aux.getNoPartido(), null, JOptionPane.YES_NO_OPTION);
@@ -147,7 +160,9 @@ public class ListaPartidos extends JDialog {
 				getRootPane().setDefaultButton(btnEliminar);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = new JButton("Salir");
+				cancelButton.setIcon(new ImageIcon(ListaPartidos.class.getResource("/Imagenes/Salir.png")));
+				cancelButton.setBackground(Color.WHITE);
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();
@@ -165,9 +180,8 @@ public class ListaPartidos extends JDialog {
 		for (Partido aux : Liga.getInstance().getListaPartidos()) {
 			fila[0] = aux.getNoPartido();
 			fila[1] = aux.getFechaJuego();
-			fila[2] = aux.getLocal();
-			fila[3] = aux.getVisitante();
-
+			fila[2] = aux.getLocal().getNombre();
+			fila[3] = aux.getVisitante().getNombre();
 			tableModel.addRow(fila);
 		}
 
@@ -180,11 +194,6 @@ public class ListaPartidos extends JDialog {
 		columnModel.getColumn(1).setPreferredWidth(140);
 		columnModel.getColumn(2).setPreferredWidth(163);
 		columnModel.getColumn(3).setPreferredWidth(163);
-
-		/*if(tableModel.getRowCount()==0){
-			btnEliminar.setEnabled(false);
-			btnModificar.setEnabled(false);
-		}*/
 
 
 	}

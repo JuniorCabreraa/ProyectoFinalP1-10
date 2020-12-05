@@ -97,6 +97,7 @@ public class RegistrarJugador extends JDialog {
 			@Override
 			public void windowOpened(WindowEvent arg0) {
 				llenarComboBox();
+				txtNombre.grabFocus();
 			}
 		});
 		setUndecorated(true);
@@ -326,16 +327,30 @@ public class RegistrarJugador extends JDialog {
 						team = Liga.getInstance().buscarEquipoPorNombre(cbxEquipo.getSelectedItem().toString());;
 						if (cbxPosicion.getSelectedIndex() == 1) {
 							player = new Lanzador(txtNombre.getText(), naci, Integer.valueOf(spnAltura.getValue().toString()), Integer.valueOf(spnPeso.getValue().toString()), Integer.valueOf(spnCamiseta.getValue().toString()), lateralidad, cbxPosicion.getSelectedItem().toString(), team);
-							team.insertarJugador(player);
-							Liga.getInstance().insertarJugador(player);
-							JOptionPane.showMessageDialog(null, "Agregado Satisfactoriamente", null, JOptionPane.WARNING_MESSAGE);
-							clean();
-						} else {
+							if (team.verificarNoCami(player) == false) {
+								if (team.getMisJugadores().size() < 25) {
+									team.insertarJugador(player);
+									JOptionPane.showMessageDialog(null, "Agregado Satisfactoriamente", null, JOptionPane.WARNING_MESSAGE);
+									clean();
+								} else {
+									JOptionPane.showMessageDialog(null, "Límite de Jugadores por Equipo Alcanzado" , null, JOptionPane.ERROR_MESSAGE);
+								}
+							} else {
+								JOptionPane.showMessageDialog(null, "Número de Camiseta No Disponible" , null, JOptionPane.ERROR_MESSAGE);
+							}
+						} else if (cbxPosicion.getSelectedIndex() != 1){
 							player = new Bateador(txtNombre.getText(), naci, Integer.valueOf(spnAltura.getValue().toString()), Integer.valueOf(spnPeso.getValue().toString()), Integer.valueOf(spnCamiseta.getValue().toString()), lateralidad, cbxPosicion.getSelectedItem().toString(), team);
-							team.insertarJugador(player);
-							Liga.getInstance().insertarJugador(player);
-							JOptionPane.showMessageDialog(null, "Agregado Satisfactoriamente", null, JOptionPane.WARNING_MESSAGE);
-							clean();
+							if (team.verificarNoCami(player) == false) {
+								if (team.getMisJugadores().size() < 25) {
+									team.insertarJugador(player);
+									JOptionPane.showMessageDialog(null, "Agregado Satisfactoriamente", null, JOptionPane.WARNING_MESSAGE);
+									clean();
+								} else {
+									JOptionPane.showMessageDialog(null, "Límite de Jugadores por Equipo Alcanzado" , null, JOptionPane.ERROR_MESSAGE);
+								}
+							} else {
+								JOptionPane.showMessageDialog(null, "Número de Camiseta No Disponible" , null, JOptionPane.ERROR_MESSAGE);
+							}
 						}
 					}
 				}

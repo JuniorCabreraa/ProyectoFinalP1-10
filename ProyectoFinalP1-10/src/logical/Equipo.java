@@ -30,7 +30,6 @@ public class Equipo implements Serializable{
 	private int carrerasImpulsadas;
 	private int boletosBase;
 	private int ponches;
-	private int basesRobadas;
 	private int turnosBate;
 	private ArrayList<Jugador> misJugadores;
 	private ArrayList<Lanzador> misLanzadores;
@@ -56,7 +55,6 @@ public class Equipo implements Serializable{
 		carrerasImpulsadas = 0;
 		boletosBase = 0;
 		ponches = 0;
-		basesRobadas = 0;
 		turnosBate = 0;
 		misJugadores = new ArrayList<Jugador>();
 		misLanzadores = new ArrayList<Lanzador>();
@@ -200,14 +198,6 @@ public class Equipo implements Serializable{
 		this.ponches = ponches;
 	}
 
-	public int getBasesRobadas() {
-		return basesRobadas;
-	}
-
-	public void setBasesRobadas(int basesRobadas) {
-		this.basesRobadas = basesRobadas;
-	}
-
 	public ArrayList<Jugador> getMisJugadores() {
 		return misJugadores;
 	}
@@ -239,18 +229,22 @@ public class Equipo implements Serializable{
 	public void setTurnosBate(int turnosBate) {
 		this.turnosBate = turnosBate;
 	}
-
-	//Insertar Jugador
-	public void insertarJugador(Jugador jugador) {
+	
+	//Verificar Numero de Camiseta al Insertar
+	public boolean verificarNoCami(Jugador jugador) {
+		boolean aux = false;
 		for (Jugador x : misJugadores) {
 			if (jugador.getNoCamiseta() == x.getNoCamiseta()) {
-				JOptionPane.showMessageDialog(null, "Número de Camiseta No Disponible" , null, JOptionPane.ERROR_MESSAGE);
-				break;
+				aux = true;
 			}
 		}
-		if (misJugadores.size() < 25) {
+		return aux;
+	}
+	
+	//Insertar Jugador
+	public void insertarJugador(Jugador jugador) {
 			misJugadores.add(jugador);
-		}
+			Liga.getInstance().insertarJugador(jugador);
 	}
 
 	//Eliminar Jugador
@@ -262,7 +256,6 @@ public class Equipo implements Serializable{
 	public void insertarJugadorAlineacion(Jugador jugador) {
 		if(jugador.isLesionado() == true) { 
 			JOptionPane.showMessageDialog(null, "JUGADOR LESIONADO", null, JOptionPane.ERROR_MESSAGE);
-
 		} else if (alineacion.size() < 9) {
 			alineacion.add(jugador);
 		}
@@ -277,7 +270,6 @@ public class Equipo implements Serializable{
 	public void insertarLanzador(Lanzador lanzador) {
 		if(lanzador.isLesionado() == true) { 
 			JOptionPane.showMessageDialog(null, "LANZADOR LESIONADO", null, JOptionPane.ERROR_MESSAGE);
-
 		} else if (misLanzadores.size() < 7) {
 			misLanzadores.add(lanzador);
 		}

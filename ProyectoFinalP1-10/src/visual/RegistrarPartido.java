@@ -13,6 +13,7 @@ import logical.Liga;
 import logical.Partido;
 
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,6 +35,9 @@ import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.border.LineBorder;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import java.util.Calendar;
 
 @SuppressWarnings("serial")
 public class RegistrarPartido extends JDialog {
@@ -44,6 +48,8 @@ public class RegistrarPartido extends JDialog {
 	private JFormattedTextField txtFecha;
 	private JComboBox<String> cbxLocal;
 	private JComboBox<String> cbxVisitante;
+	private JSpinner spnHora;
+	private JButton btnNewButton;
 
 	/**
 	 * Launch the application.
@@ -69,10 +75,11 @@ public class RegistrarPartido extends JDialog {
 			@Override
 			public void windowOpened(WindowEvent arg0) {
 				llenarCbxEquipos();
+				txtFecha.grabFocus();
 			}
 		});
 		setUndecorated(true);
-		setBounds(100, 100, 526, 234);
+		setBounds(100, 100, 526, 291);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(new Color(255, 255, 255));
@@ -138,7 +145,7 @@ public class RegistrarPartido extends JDialog {
 		{
 			JLabel lblEstadio = new JLabel("Estadio:");
 			lblEstadio.setFont(new Font("Tahoma", Font.BOLD, 12));
-			lblEstadio.setBounds(316, 119, 49, 15);
+			lblEstadio.setBounds(316, 174, 49, 15);
 			contentPanel.add(lblEstadio);
 		}
 		{
@@ -151,11 +158,10 @@ public class RegistrarPartido extends JDialog {
 			txtNum.setColumns(10);
 		}
 		{
-			//DateFormat format = new SimpleDateFormat("##/##/#### hh:mm");
-			MaskFormatter aux = new MaskFormatter("##/##/#### ##:##");
+			MaskFormatter aux = new MaskFormatter("##/##/####");
 			aux.setPlaceholderCharacter(' ');
 			txtFecha = new JFormattedTextField(aux);
-			txtFecha.setToolTipText("DD/MM/AAAA    HH:MM");
+			txtFecha.setToolTipText("DD/MM/AAAA");
 			txtFecha.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			txtFecha.setBounds(376, 59, 118, 24);
 			contentPanel.add(txtFecha);
@@ -186,7 +192,7 @@ public class RegistrarPartido extends JDialog {
 		{
 			txtEstadio = new JTextField();
 			txtEstadio.setEditable(false);
-			txtEstadio.setBounds(376, 114, 118, 24);
+			txtEstadio.setBounds(376, 169, 118, 24);
 			contentPanel.add(txtEstadio);
 			txtEstadio.setColumns(10);
 		}
@@ -200,6 +206,7 @@ public class RegistrarPartido extends JDialog {
 					Equipo visitante = null;
 					Equipo local = null;
 					SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+					DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
 			        Date inicia = null;
 					
 					if (cbxLocal.getSelectedIndex() == 0 || cbxVisitante.getSelectedIndex() == 0 || txtEstadio.getText().isEmpty() || txtFecha.getText().isEmpty() || txtNum.getText().isEmpty()) {
@@ -213,7 +220,9 @@ public class RegistrarPartido extends JDialog {
 						}
 						local = Liga.getInstance().buscarEquipoPorNombre(cbxLocal.getSelectedItem().toString());
 						visitante = Liga.getInstance().buscarEquipoPorNombre(cbxVisitante.getSelectedItem().toString());
-						game = new Partido((Liga.getInstance().getCantPartidos()+1), inicia, local, visitante, txtEstadio.getText());
+						Date x = (Date)spnHora.getValue();
+						String hora = dateFormat.format(x);
+						game = new Partido((Liga.getInstance().getCantPartidos()+1), inicia, hora, local, visitante, txtEstadio.getText());
 						Liga.getInstance().insertarPartido(game);
 						JOptionPane.showMessageDialog(null, "Agregado Satisfactoriamente", null, JOptionPane.WARNING_MESSAGE);
 						clean();
@@ -222,8 +231,52 @@ public class RegistrarPartido extends JDialog {
 			});
 			btnSave.setFont(new Font("Tahoma", Font.BOLD, 14));
 			btnSave.setIcon(new ImageIcon(RegistrarPartido.class.getResource("/Imagenes/add.png")));
-			btnSave.setBounds(316, 164, 178, 31);
+			btnSave.setBounds(174, 233, 178, 31);
 			contentPanel.add(btnSave);
+		}
+		{
+			JLabel lblHora = new JLabel("Hora:");
+			lblHora.setFont(new Font("Tahoma", Font.BOLD, 12));
+			lblHora.setBounds(316, 119, 49, 15);
+			contentPanel.add(lblHora);
+		}
+		{
+			spnHora = new JSpinner();
+			spnHora.setFont(new Font("Tahoma", Font.PLAIN, 12));
+			//Date date = new Date(); 
+			spnHora.setModel(new SpinnerDateModel(new Date(), null, new Date(), Calendar.AM_PM));
+			JSpinner.DateEditor sp = new JSpinner.DateEditor(spnHora, "hh:mm a"); 
+			spnHora.setEditor(sp);
+			//spnHora.setValue(new Date());
+			spnHora.setBounds(376, 114, 118, 24);
+			contentPanel.add(spnHora);
+		}
+		{
+			btnNewButton = new JButton("New button");
+			btnNewButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					SimpleDateFormat formato = new SimpleDateFormat("hh:mm a");
+					DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+					Date x = (Date)spnHora.getValue();
+					String show = dateFormat.format(x);
+					
+					Date last = null;
+					try {
+						last = formato.parse(show);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					JOptionPane.showMessageDialog(null, x, null, JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, show, null, JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, last, null, JOptionPane.ERROR_MESSAGE);
+					if (Calendar.getInstance().getTime().before(last)) {
+						JOptionPane.showMessageDialog(null, last, "PERFECTO", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			});
+			btnNewButton.setBounds(405, 239, 89, 23);
+			contentPanel.add(btnNewButton);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -249,5 +302,4 @@ public class RegistrarPartido extends JDialog {
 			cbxVisitante.addItem(team.getNombre());
 		}
 	}
-
 }

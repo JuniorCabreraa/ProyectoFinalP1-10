@@ -22,7 +22,6 @@ public class Jugador implements Serializable{
 	protected ArrayList<Lesion> misLesiones;
 	protected int boletosBase;
 	protected int ponches;
-	protected int juegosJugados;
 	protected int errores;
 	protected Equipo equipo;
 	
@@ -41,7 +40,6 @@ public class Jugador implements Serializable{
 		misLesiones = new ArrayList<Lesion>();
 		boletosBase = 0;
 		ponches = 0;
-		juegosJugados = 0;
 		errores = 0;
 		this.equipo = equipo;
 	}
@@ -135,14 +133,6 @@ public class Jugador implements Serializable{
 		this.ponches = ponches;
 	}
 
-	public int getJuegosJugados() {
-		return juegosJugados;
-	}
-
-	public void setJuegosJugados(int juegosJugados) {
-		this.juegosJugados = juegosJugados;
-	}
-
 	public int getErrores() {
 		return errores;
 	}
@@ -160,11 +150,13 @@ public class Jugador implements Serializable{
 	}
 	
 	//Insertar Lesion (Tambien Elimina al Jugador de la Alineacion)
-	public void insertarLesion(Lesion lesion) {
+	public boolean insertarLesion(Lesion lesion) {
+		boolean aux = false;
 		lesion.getJugador().verificarLesion();
 		if (lesion.getJugador().isLesionado() == false) {
 			misLesiones.add(lesion);
 			lesionado = true;
+			aux = true;
 			if (lesion.getJugador() instanceof Jugador) {
 				for (Jugador player : equipo.getAlineacion()) {
 					if (lesion.getJugador().equals(player)) {
@@ -184,23 +176,20 @@ public class Jugador implements Serializable{
 		} else {
 			JOptionPane.showMessageDialog(null, "Ya está lesionado", null, JOptionPane.INFORMATION_MESSAGE);
 		}
+		
+		return aux;
 	}
 	
 	//Verificar Lesion
-	public boolean verificarLesion() {
-		boolean saludable = false;
+	public void verificarLesion() {
 		Date present = new Date();
 		
 		for (Lesion lesion : misLesiones) {
 			if (present.after(lesion.getFinaliza()) == true) {
 				lesion.setActiva(false);
-			} 
-			if ((misLesiones.indexOf(lesion) == misLesiones.size()-1) && lesion.isActiva() == false) {
 				lesionado = false;
-				saludable = true;
-			}
+			} 
 		}
-		return saludable;
 	}
 
 }

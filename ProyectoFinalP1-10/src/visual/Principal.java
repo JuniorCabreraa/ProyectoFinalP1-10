@@ -1,21 +1,20 @@
 package visual;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Toolkit;
-import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 
+import logical.Jugador;
 import logical.Liga;
+import logical.Partido;
 
 import java.awt.Color;
 import javax.swing.JMenuBar;
@@ -23,14 +22,34 @@ import javax.swing.JMenu;
 import javax.swing.ImageIcon;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
+import java.awt.event.WindowFocusListener;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-@SuppressWarnings({ "unused", "serial" })
 public class Principal extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private static JLabel lbl1;
 	private static JLabel lbl2;
@@ -66,6 +85,19 @@ public class Principal extends JFrame {
 	private JMenuItem mntmNewMenuItem_14;
 	private JMenuItem mntmNewMenuItem_15;
 	private JMenuItem mntmNewMenuItem_16;
+	private JPanel panelCalendario;
+	private JScrollPane scrollPane;
+	private static JTable table;
+	private static DefaultTableModel model;
+	private static Object[] filas;
+	private JComboBox<String> cbxDate;
+	private JLabel lblMostrarPartidos;
+	private JButton btnIniciar;
+	private JButton btnEsconder;
+	private Partido game = null;
+	private String letsPlay = null;
+	private JButton btnRepro;
+	private JButton btnEliminar;
 
 	/**
 	 * Launch the application.
@@ -73,6 +105,7 @@ public class Principal extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				Liga.getInstance().loadData();
 				try {
 					Principal frame = new Principal();
 					frame.setVisible(true);
@@ -87,12 +120,23 @@ public class Principal extends JFrame {
 	 * Create the frame.
 	 */
 	public Principal() {
+		addWindowFocusListener(new WindowFocusListener() {
+			public void windowGainedFocus(WindowEvent arg0) {
+				cbxDate.setSelectedIndex(0);
+				calendarioPartidos(0);
+			}
+			public void windowLostFocus(WindowEvent arg0) {
+				cbxDate.setSelectedIndex(0);
+				calendarioPartidos(0);
+			}
+		});
 		setBackground(Color.BLACK);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent arg0) {
 				Wallpaper wp = new Wallpaper();
 				wp.start();
+				calendarioPartidos(0);
 			}
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -137,11 +181,21 @@ public class Principal extends JFrame {
 				}
 				{
 					mntmModificarUsuario = new JMenuItem("Modificar Usuario");
+					mntmModificarUsuario.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							calendarioPartidos(0);
+						}
+					});
 					mntmModificarUsuario.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/modify.png")));
 					mnNewMenu.add(mntmModificarUsuario);
 				}
 				{
 					mntmGuardarDatos = new JMenuItem("Guardar Datos");
+					mntmGuardarDatos.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							Liga.getInstance().saveData();
+						}
+					});
 					mntmGuardarDatos.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/save.png")));
 					mnNewMenu.add(mntmGuardarDatos);
 				}
@@ -155,7 +209,12 @@ public class Principal extends JFrame {
 					mnNewMenu_2.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/bateador.png")));
 					mnNewMenu_1.add(mnNewMenu_2);
 					{
-						mntmNewMenuItem = new JMenuItem("Por Jugar");
+						mntmNewMenuItem = new JMenuItem("Calendario de Juego");
+						mntmNewMenuItem.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								panelCalendario.setVisible(true);
+							}
+						});
 						mntmNewMenuItem.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/list.png")));
 						mnNewMenu_2.add(mntmNewMenuItem);
 					}
@@ -166,6 +225,17 @@ public class Principal extends JFrame {
 					}
 					{
 						mntmNewMenuItem_3 = new JMenuItem("Todos");
+						mntmNewMenuItem_3.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								try {
+									ListaPartidos listPart = new ListaPartidos();
+									listPart.setVisible(true);
+								} catch (ParseException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						});
 						mntmNewMenuItem_3.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/list.png")));
 						mnNewMenu_2.add(mntmNewMenuItem_3);
 					}
@@ -217,6 +287,17 @@ public class Principal extends JFrame {
 				}
 				{
 					mntmNewMenuItem_6 = new JMenuItem("Mostrar Equipos");
+					mntmNewMenuItem_6.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							try {
+								ListaEquipos listTeam = new ListaEquipos();
+								listTeam.setVisible(true);
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+					});
 					mntmNewMenuItem_6.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/list.png")));
 					mnNewMenu_3.add(mntmNewMenuItem_6);
 				}
@@ -265,6 +346,18 @@ public class Principal extends JFrame {
 					}
 					{
 						mntmNewMenuItem_9 = new JMenuItem("Verificar Lesi\u00F3n");
+						mntmNewMenuItem_9.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								verificacionlesiones();
+								try {
+									ListaLesion listBroken = new ListaLesion();
+									listBroken.setVisible(true);
+								} catch (ParseException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							}
+						});
 						mntmNewMenuItem_9.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/Search.png")));
 						mnNewMenu_5.add(mntmNewMenuItem_9);
 					}
@@ -276,6 +369,17 @@ public class Principal extends JFrame {
 				}
 				{
 					mntmNewMenuItem_11 = new JMenuItem("Mostrar Jugadores");
+					mntmNewMenuItem_11.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							try {
+								ListaJugadores listPlayers = new ListaJugadores();
+								listPlayers.setVisible(true);
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+					});
 					mntmNewMenuItem_11.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/list.png")));
 					mnNewMenu_4.add(mntmNewMenuItem_11);
 				}
@@ -321,6 +425,161 @@ public class Principal extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		{
+			panelCalendario = new JPanel();
+			panelCalendario.setOpaque(false);
+			panelCalendario.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Calendario de Juegos", TitledBorder.CENTER, TitledBorder.TOP, null, Color.WHITE));
+			panelCalendario.setBounds(696, 28, 644, 240);
+			contentPane.add(panelCalendario);
+			panelCalendario.setLayout(null);
+			{
+				scrollPane = new JScrollPane();
+				scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+				scrollPane.setBounds(10, 56, 624, 127);
+				scrollPane.getViewport().setBackground(Color.white);
+				panelCalendario.add(scrollPane);
+				{
+					model = new DefaultTableModel();
+					String[] headers = {"No Partido", "Fecha de Juego", "Equipo Local", "Equipo Visitante", "Estadio"};
+					model.setColumnIdentifiers(headers);
+					table = new JTable();
+					table.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							int seleccion = table.getSelectedRow();
+							if (seleccion != -1) {
+								btnIniciar.setEnabled(true);
+								btnEliminar.setEnabled(true);
+								btnRepro.setEnabled(true);
+								game = Liga.getInstance().buscarPartidoPorNumero((int)model.getValueAt(seleccion, 0));
+								letsPlay = (String) model.getValueAt(seleccion, 1);
+							}
+						}
+					});
+					table.setGridColor(new Color(204, 204, 204));
+					table.setForeground(Color.BLACK);
+					table.setFont(new Font("Tahoma", Font.PLAIN, 13));
+					table.setModel(model);
+					table.getTableHeader().setBackground(Color.WHITE);
+					table.getTableHeader().setForeground(Color.BLACK);
+					table.setBackground(Color.WHITE);
+					table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+					scrollPane.setViewportView(table);
+				}
+			}
+			{
+				cbxDate = new JComboBox<String>();
+				cbxDate.setBackground(Color.WHITE);
+				cbxDate.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if (cbxDate.getSelectedIndex() > 0) {
+							int i = 1;
+							calendarioPartidos(i);
+						} else {
+							int i = 0;
+							calendarioPartidos(i);
+						}
+					}
+				});
+				cbxDate.setFont(new Font("Tahoma", Font.BOLD, 11));
+				cbxDate.setModel(new DefaultComboBoxModel<String>(new String[] {"<Todos>", "Hoy"}));
+				cbxDate.setBounds(135, 19, 93, 26);
+				panelCalendario.add(cbxDate);
+			}
+			{
+				lblMostrarPartidos = new JLabel("Mostrar Partidos:");
+				lblMostrarPartidos.setForeground(Color.WHITE);
+				lblMostrarPartidos.setFont(new Font("Tahoma", Font.BOLD, 12));
+				lblMostrarPartidos.setBounds(10, 25, 107, 15);
+				panelCalendario.add(lblMostrarPartidos);
+			}
+			{
+				btnIniciar = new JButton("  Jugar Partido!");
+				btnIniciar.setEnabled(false);
+				btnIniciar.setFont(new Font("Tahoma", Font.PLAIN, 12));
+				btnIniciar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						Date last = parseFecha(letsPlay);
+				        Date ahora = new Date();
+				        if (ahora.after(last)) {
+				        	panelCalendario.setVisible(false);
+				        	AlineacionJuego aliJue = new AlineacionJuego(game);
+				        	aliJue.setVisible(true);
+				        } else {
+				         	JOptionPane.showMessageDialog(null, "Debe esperar la fecha del partido", "Partido No: "+game.getNoPartido()+" - "+game.getLocal().getNombre()+" vs "+game.getVisitante().getNombre(), JOptionPane.INFORMATION_MESSAGE);
+						}
+				        
+					}
+				});
+				btnIniciar.setBackground(Color.WHITE);
+				btnIniciar.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/pitcher.png")));
+				btnIniciar.setBounds(455, 198, 179, 31);
+				panelCalendario.add(btnIniciar);
+			}
+			{
+				btnEsconder = new JButton("");
+				btnEsconder.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						panelCalendario.setVisible(false);
+					}
+				});
+				btnEsconder.setToolTipText("Ocultar Calendario de Juegos");
+				btnEsconder.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/Minimizar.png")));
+				btnEsconder.setBackground(Color.WHITE);
+				btnEsconder.setBounds(591, 12, 43, 33);
+				panelCalendario.add(btnEsconder);
+			}
+			{
+				btnRepro = new JButton("Reprogramar Partido");
+				btnRepro.setEnabled(false);
+				btnRepro.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int option = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea reprogramar este partido?", "Partido No: "+game.getNoPartido()+" - "+game.getLocal().getNombre()+" vs "+game.getVisitante().getNombre(), JOptionPane.WARNING_MESSAGE);
+						if (option == JOptionPane.OK_OPTION) {
+							try {
+								ReprogramarPartido reproPart = new ReprogramarPartido(game);
+								reproPart.setVisible(true);
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							//calendarioPartidos(0);
+							//cbxDate.setSelectedIndex(0);
+							btnRepro.setEnabled(false);
+							game = null;
+							letsPlay = null;
+						}
+					}
+				});
+				btnRepro.setBackground(Color.WHITE);
+				btnRepro.setFont(new Font("Tahoma", Font.PLAIN, 12));
+				btnRepro.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/change.png")));
+				btnRepro.setBounds(231, 198, 179, 31);
+				panelCalendario.add(btnRepro);
+			}
+			{
+				btnEliminar = new JButton("  Eliminar Partido");
+				btnEliminar.setEnabled(false);
+				btnEliminar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int option = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea eliminar este partido?", "Partido No: "+game.getNoPartido()+" - "+game.getLocal().getNombre()+" vs "+game.getVisitante().getNombre(), JOptionPane.WARNING_MESSAGE);
+						if (option == JOptionPane.OK_OPTION) {
+							Liga.getInstance().eliminarPartido(game);
+							calendarioPartidos(0);
+							cbxDate.setSelectedIndex(0);
+							btnEliminar.setEnabled(false);
+							game = null;
+							letsPlay = null;
+						}
+					}
+				});
+				btnEliminar.setBackground(Color.WHITE);
+				btnEliminar.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/eliminar.png")));
+				btnEliminar.setFont(new Font("Tahoma", Font.PLAIN, 12));
+				btnEliminar.setBounds(10, 198, 179, 31);
+				panelCalendario.add(btnEliminar);
+			}
+		}
+		{
 			lbl1 = new JLabel("");
 			lbl1.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/estadio.jpg")));
 			lbl1.setBounds(0, -50, 1366, 768);
@@ -356,6 +615,7 @@ public class Principal extends JFrame {
 			contentPane.add(lbl5);
 		}
 	}
+
 	public static void wallpaperone() {
 		lbl1.setVisible(true);
 		lbl2.setVisible(false);
@@ -391,4 +651,66 @@ public class Principal extends JFrame {
 		lbl4.setVisible(false);
 		lbl5.setVisible(true);
 	}
+	
+	public void verificacionlesiones() {
+		for (Jugador player : Liga.getInstance().getListaJugadores()) {
+			player.verificarLesion();
+		}
+	}
+	
+	public void calendarioPartidos(int caso) {
+		model.setRowCount(0);
+		filas = new Object[model.getColumnCount()];
+		String df = "dd-MM-yyyy"; 
+        SimpleDateFormat form = new SimpleDateFormat(df);
+        DateFormat dateFormat = new SimpleDateFormat(df);
+        String diaHoy = dateFormat.format(new Date());
+        
+        switch (caso) {
+		case 0:
+			for (Partido game : Liga.getInstance().getListaPartidos()) {
+				if (!game.isTerminado()) {
+					filas[0] = game.getNoPartido();
+					filas[1] = form.format(game.getFechaJuego())+" "+game.getHoraJuego();
+					filas[2] = game.getLocal().getNombre();
+					filas[3] = game.getVisitante().getNombre();
+					filas[4] = game.getEstadio();
+					model.addRow(filas);
+				}
+			}
+			break;
+		case 1:
+			for (Partido game : Liga.getInstance().getListaPartidos()) {
+				if (!game.isTerminado() && diaHoy.equals(form.format(game.getFechaJuego()))) {
+					filas[0] = game.getNoPartido();
+					filas[1] = form.format(game.getFechaJuego())+" "+game.getHoraJuego();
+					filas[2] = game.getLocal().getNombre();
+					filas[3] = game.getVisitante().getNombre();
+					filas[4] = game.getEstadio();
+					model.addRow(filas);
+				}
+			}
+			break;
+		default:
+			break;
+		}
+
+		TableColumnModel columnModel = table.getColumnModel();
+		columnModel.getColumn(0).setPreferredWidth(23);
+		columnModel.getColumn(4).setPreferredWidth(50);
+		
+	}
+	
+	public static Date parseFecha(String fecha) {
+        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+        Date fechaDate = null;
+        try {
+            fechaDate = formato.parse(fecha);
+        } 
+        catch (ParseException ex) 
+        {
+            System.out.println(ex);
+        }
+        return fechaDate;
+    }
 }

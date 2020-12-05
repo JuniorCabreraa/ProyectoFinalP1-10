@@ -13,6 +13,7 @@ public class Partido implements Serializable{
 	private static final long serialVersionUID = 1925195659803900370L;
 	private int noPartido;
 	private Date fechaJuego;
+	private String horaJuego;
 	private Equipo local;
 	private Equipo visitante;
 	private ArrayList<Jugador> alineacionLocal;
@@ -30,18 +31,19 @@ public class Partido implements Serializable{
 	private boolean terminado;
 	
 	//Constructor
-	public Partido(int noPartido, Date fechaJuego, Equipo local, Equipo visitante, String estadio) {
+	public Partido(int noPartido, Date fechaJuego, String horaJuego, Equipo local, Equipo visitante, String estadio) {
 		super();
 		this.noPartido = noPartido;
 		this.fechaJuego = fechaJuego;
+		this.horaJuego = horaJuego;
 		this.local = local;
 		this.visitante = visitante;
 		alineacionLocal = new ArrayList<Jugador>();
 		alineacionVisitante =  new ArrayList<Jugador>();
 		this.estadio = estadio;
-		entradasLocal = new int[11];
-		entradasVisitante = new int[11];
-		entradas = 0;
+		entradasLocal = new int[12];
+		entradasVisitante = new int[12];
+		entradas = 1;
 		carrerasLocal = 0;
 		carrerasVisitante = 0;
 		hitsLocal = 0;
@@ -66,6 +68,14 @@ public class Partido implements Serializable{
 
 	public void setFechaJuego(Date fechaJuego) {
 		this.fechaJuego = fechaJuego;
+	}
+
+	public String getHoraJuego() {
+		return horaJuego;
+	}
+
+	public void setHoraJuego(String horaJuego) {
+		this.horaJuego = horaJuego;
 	}
 
 	public Equipo getLocal() {
@@ -215,109 +225,109 @@ public class Partido implements Serializable{
 		switch (entradas) {
 		case 1:
 			if (this.local.equals(ataca)) {
-				entradasLocal[0] = local;
-				carrerasLocal = local;
+				entradasLocal[0] += local;
+				carrerasLocal += local;
 			} else if (this.visitante.equals(ataca)) {
-				entradasVisitante[0] = visitante;
-				carrerasVisitante = visitante;
+				entradasVisitante[0] += visitante;
+				carrerasVisitante += visitante;
 			}
 			break;
 		case 2:
 			if (this.local.equals(ataca)) {
-				entradasLocal[1] = local;
+				entradasLocal[1] += local;
 				carrerasLocal += local;
 			} else if (this.visitante.equals(ataca)) {
-				entradasVisitante[1] = visitante;
+				entradasVisitante[1] += visitante;
 				carrerasVisitante += visitante;
 			}
 			break;
 		case 3:
 			if (this.local.equals(ataca)) {
-				entradasLocal[2] = local;
+				entradasLocal[2] += local;
 				carrerasLocal += local;
 			} else if (this.visitante.equals(ataca)) {
-				entradasVisitante[2] = visitante;
+				entradasVisitante[2] += visitante;
 				carrerasVisitante += visitante;
 			}
 			break;
 		case 4:
 			if (this.local.equals(ataca)) {
-				entradasLocal[3] = local;
+				entradasLocal[3] += local;
 				carrerasLocal += local;
 			} else if (this.visitante.equals(ataca)) {
-				entradasVisitante[3] = visitante;
+				entradasVisitante[3] += visitante;
 				carrerasVisitante += visitante;
 			}
 			break;
 		case 5:
 			if (this.local.equals(ataca)) {
-				entradasLocal[4] = local;
+				entradasLocal[4] += local;
 				carrerasLocal += local;
 			} else if (this.visitante.equals(ataca)) {
-				entradasVisitante[4] = visitante;
+				entradasVisitante[4] += visitante;
 				carrerasVisitante += visitante;
 			}
 			break;
 		case 6:
 			if (this.local.equals(ataca)) {
-				entradasLocal[5] = local;
+				entradasLocal[5] += local;
 				carrerasLocal += local;
 			} else if (this.visitante.equals(ataca)) {
-				entradasVisitante[5] = visitante;
+				entradasVisitante[5] += visitante;
 				carrerasVisitante += visitante;
 			}
 			break;
 		case 7:
 			if (this.local.equals(ataca)) {
-				entradasLocal[6] = local;
+				entradasLocal[6] += local;
 				carrerasLocal += local;
 			} else if (this.visitante.equals(ataca)) {
-				entradasVisitante[6] = visitante;
+				entradasVisitante[6] += visitante;
 				carrerasVisitante += visitante;
 			}
 			break;
 		case 8:
 			if (this.local.equals(ataca)) {
-				entradasLocal[7] = local;
+				entradasLocal[7] += local;
 				carrerasLocal += local;
 			} else if (this.visitante.equals(ataca)) {
-				entradasVisitante[7] = visitante;
+				entradasVisitante[7] += visitante;
 				carrerasVisitante += visitante;
 			}
 			break;
 		case 9:
 			if (this.local.equals(ataca)) {
-				entradasLocal[8] = local;
+				entradasLocal[8] += local;
 				carrerasLocal += local;
 			} else if (this.visitante.equals(ataca)) {
-				entradasVisitante[8] = visitante;
+				entradasVisitante[8] += visitante;
 				carrerasVisitante += visitante;
 			}
 			break;
 		case 10:
 			if (this.local.equals(ataca)) {
-				entradasLocal[9] = local;
+				entradasLocal[9] += local;
 				carrerasLocal += local;
 			} else if (this.visitante.equals(ataca)) {
-				entradasVisitante[9] = visitante;
+				entradasVisitante[9] += visitante;
 				carrerasVisitante += visitante;
 			}
 			break;
 		case 11:
 			if (this.local.equals(ataca)) {
-				entradasLocal[10] = local;
+				entradasLocal[10] += local;
 				carrerasLocal += local;
 			} else if (this.visitante.equals(ataca)) {
-				entradasVisitante[10] = visitante;
+				entradasVisitante[10] += visitante;
 				carrerasVisitante += visitante;
 			}
 			break;
 		case 12:
 			if (this.local.equals(ataca)) {
-				entradasLocal[11] = local;
+				entradasLocal[11] += local;
 				carrerasLocal += local;
 			} else if (this.visitante.equals(ataca)) {
-				entradasVisitante[11] = visitante;
+				entradasVisitante[11] += visitante;
 				carrerasVisitante += visitante;
 			}
 			break;

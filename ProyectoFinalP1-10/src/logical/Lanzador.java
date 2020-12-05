@@ -19,8 +19,6 @@ public class Lanzador extends Jugador implements Serializable{
 	private int juegosGanados;
 	private int juegosPerdidos;
 	private int juegosSalvados;
-	private int juegosCompletos;
-	private int juegosBlanqueados;
 	private int juegosLanzados;
 	private int aperturas;
 	private int outs;
@@ -38,8 +36,6 @@ public class Lanzador extends Jugador implements Serializable{
 		juegosGanados = 0;
 		juegosPerdidos = 0;
 		juegosSalvados = 0;
-		juegosCompletos = 0;
-		juegosBlanqueados = 0;
 		juegosLanzados = 0;
 		aperturas = 0;
 		outs = 0;
@@ -116,22 +112,6 @@ public class Lanzador extends Jugador implements Serializable{
 
 	public void setJuegosSalvados(int juegosSalvados) {
 		this.juegosSalvados = juegosSalvados;
-	}
-
-	public int getJuegosCompletos() {
-		return juegosCompletos;
-	}
-
-	public void setJuegosCompletos(int juegosCompletos) {
-		this.juegosCompletos = juegosCompletos;
-	}
-
-	public int getJuegosBlanqueados() {
-		return juegosBlanqueados;
-	}
-
-	public void setJuegosBlanqueados(int juegosBlanqueados) {
-		this.juegosBlanqueados = juegosBlanqueados;
 	}
 
 	public int getJuegosLanzados() {

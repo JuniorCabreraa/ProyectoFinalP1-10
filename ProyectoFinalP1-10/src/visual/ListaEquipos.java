@@ -11,7 +11,6 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -26,7 +25,15 @@ import javax.swing.JScrollPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ListSelectionModel;
+import java.awt.Color;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
+import javax.swing.ImageIcon;
+import java.awt.Toolkit;
+import javax.swing.ScrollPaneConstants;
 
+@SuppressWarnings("serial")
 public class ListaEquipos extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -36,15 +43,11 @@ public class ListaEquipos extends JDialog {
 	private JButton btnModificar;
 	private JButton btnEliminar;
 	private String name;
-	
-	Equipo equipo;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		Liga.getInstance().loadData();
-		
 		try {
 			ListaEquipos dialog = new ListaEquipos();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -58,24 +61,33 @@ public class ListaEquipos extends JDialog {
 	 * Create the dialog.
 	 */
 	public ListaEquipos() throws ParseException{
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ListaEquipos.class.getResource("/Imagenes/team.png")));
+		setResizable(false);
+		setModal(true);
 		setTitle("Listado de Equipos");
-		setBounds(100, 100, 693, 301);
+		setBounds(100, 100, 693, 371);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPanel.setBackground(Color.WHITE);
+		contentPanel.setBorder(new LineBorder(new Color(204, 204, 204)));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		{
 			JPanel panel = new JPanel();
-			panel.setBorder(new TitledBorder(null, "Listado de Equipos", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-			panel.setBounds(10, 11, 657, 206);
+			panel.setBackground(Color.WHITE);
+			panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+			panel.setBounds(10, 11, 657, 262);
 			contentPanel.add(panel);
 			panel.setLayout(null);
 
 			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setBounds(10, 22, 637, 173);
+			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			scrollPane.setBounds(10, 11, 637, 240);
 			panel.add(scrollPane);
 
 			table = new JTable();
+			table.setBackground(new Color(255, 255, 255));
+			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			table.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -102,6 +114,8 @@ public class ListaEquipos extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
 			btnModificar = new JButton("Modificar");
+			btnModificar.setIcon(new ImageIcon(ListaEquipos.class.getResource("/Imagenes/modify.png")));
+			btnModificar.setBackground(Color.WHITE);
 			btnModificar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					RegistrarEquipo mod = null;
@@ -123,6 +137,8 @@ public class ListaEquipos extends JDialog {
 			getRootPane().setDefaultButton(btnModificar);
 			{
 				btnEliminar = new JButton("Eliminar");
+				btnEliminar.setIcon(new ImageIcon(ListaEquipos.class.getResource("/Imagenes/change.png")));
+				btnEliminar.setBackground(Color.WHITE);
 				btnEliminar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 
@@ -147,7 +163,9 @@ public class ListaEquipos extends JDialog {
 				getRootPane().setDefaultButton(btnEliminar);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = new JButton("Salir");
+				cancelButton.setIcon(new ImageIcon(ListaEquipos.class.getResource("/Imagenes/Salir.png")));
+				cancelButton.setBackground(Color.WHITE);
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();
