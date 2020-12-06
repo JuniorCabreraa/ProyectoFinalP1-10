@@ -174,6 +174,7 @@ public class SimuladorPartido extends JDialog {
 	private JLabel lblSalir;
 	private JLabel lblNewLabel_2;
 	private JLabel lblFondaso;
+	private JLabel lblEntradaI;
 
 	/**
 	 * Launch the application.
@@ -203,6 +204,7 @@ public class SimuladorPartido extends JDialog {
 				llenarBateadoresLocal();
 				llenarBateadoresVisitante();
 				lblPartido.setText(""+gamePlay.getLocal().getNombre()+" a la Defensiva vs "+gamePlay.getVisitante().getNombre()+" a la Ofensiva");
+				lblEntradaI.setText("Entrada: "+gamePlay.getEntradas());
 			}
 		});
 		gamePlay = juego;
@@ -346,11 +348,15 @@ public class SimuladorPartido extends JDialog {
 					btn3B_BateadorVis.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 							Bateador player = null;
+							Lanzador player2 = null;
 							int i = 0;
 							if (cbxBateadorVisitante.getSelectedIndex() > 0) {
 								player = (Bateador) Liga.getInstance().buscarJugadorPorNombre(cbxBateadorVisitante.getSelectedItem().toString());
 								player.setTriples(player.getTriples()+1);
+								player.setHits(player.getHits()+1);
 								gamePlay.getVisitante().setTriples(gamePlay.getVisitante().getTriples()+1);
+								player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherLocal.getText());
+								player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
 								
 								i = Integer.parseInt(txtHitsVisi.getText().trim());
 								i = i + 1;
@@ -375,6 +381,7 @@ public class SimuladorPartido extends JDialog {
 							if (cbxBateadorVisitante.getSelectedIndex() > 0) {
 								player = (Bateador) Liga.getInstance().buscarJugadorPorNombre(cbxBateadorVisitante.getSelectedItem().toString());
 								player.setHomeruns(player.getHomeruns()+1);
+								player.setHits(player.getHits()+1);
 								gamePlay.getVisitante().setHomeruns(gamePlay.getVisitante().getHomeruns()+1);
 								player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherLocal.getText());
 								player2.setHomerunsPermitidos(player2.getHomerunsPermitidos()+1);
@@ -387,6 +394,7 @@ public class SimuladorPartido extends JDialog {
 
 								//player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherLocal.getText());
 								player2.setCarrerasLimpiasPermitidas(player2.getCarrerasLimpiasPermitidas()+1);
+								player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
 								
 								x = Integer.parseInt(txtHitsVisi.getText().trim());
 								x = x + 1;
@@ -408,11 +416,15 @@ public class SimuladorPartido extends JDialog {
 					btn2B_BateadorVis.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 							Bateador player = null;
+							Lanzador player2 = null;
 							int i = 0;
 							if (cbxBateadorVisitante.getSelectedIndex() > 0) {
 								player = (Bateador) Liga.getInstance().buscarJugadorPorNombre(cbxBateadorVisitante.getSelectedItem().toString());
 								player.setDobles(player.getDobles()+1);
+								player.setHits(player.getHits()+1);
 								gamePlay.getVisitante().setDobles(gamePlay.getVisitante().getDobles()+1);
+								player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherLocal.getText());
+								player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
 								
 								i = Integer.parseInt(txtHitsVisi.getText().trim());
 								i = i + 1;
@@ -1068,11 +1080,15 @@ public class SimuladorPartido extends JDialog {
 				btn3B_BateadorLocal.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						Bateador player = null;
+						Lanzador player2 = null;
 						int i = 0;
 						if (cbxBateadorLocal.getSelectedIndex() > 0) {
 							player = (Bateador) Liga.getInstance().buscarJugadorPorNombre(cbxBateadorLocal.getSelectedItem().toString());
 							player.setTriples(player.getTriples()+1);
+							player.setHits(player.getHits()+1);
 							gamePlay.getLocal().setTriples(gamePlay.getLocal().getTriples()+1);
+							player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherVis.getText());
+							player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
 							
 							i = Integer.parseInt(txtHistLocal.getText().trim());
 							i = i + 1;
@@ -1097,9 +1113,11 @@ public class SimuladorPartido extends JDialog {
 						if (cbxBateadorLocal.getSelectedIndex() > 0) {
 							player = (Bateador) Liga.getInstance().buscarJugadorPorNombre(cbxBateadorLocal.getSelectedItem().toString());
 							player.setHomeruns(player.getHomeruns()+1);
+							player.setHits(player.getHits()+1);
 							gamePlay.getLocal().setHomeruns(gamePlay.getLocal().getHomeruns()+1);
 							player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherVis.getText());
 							player2.setHomerunsPermitidos(player2.getHomerunsPermitidos()+1);
+							player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
 							
 							player.setCarreras(player.getCarreras()+1);
 							gamePlay.getLocal().setCarreras(gamePlay.getLocal().getCarreras()+1);
@@ -1130,11 +1148,16 @@ public class SimuladorPartido extends JDialog {
 				btn2B_BateadorLocal.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						Bateador player = null;
+						Lanzador player2 = null;
 						int i = 0;
 						if (cbxBateadorLocal.getSelectedIndex() > 0) {
 							player = (Bateador) Liga.getInstance().buscarJugadorPorNombre(cbxBateadorLocal.getSelectedItem().toString());
 							player.setDobles(player.getDobles()+1);
+							player.setHits(player.getHits()+1);
 							gamePlay.getLocal().setDobles(gamePlay.getLocal().getDobles()+1);
+
+							player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherVis.getText());
+							player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
 							
 							i = Integer.parseInt(txtHistLocal.getText().trim());
 							i = i + 1;
@@ -1929,6 +1952,7 @@ public class SimuladorPartido extends JDialog {
 
 							player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherLocal.getText());
 							player2.setCarrerasLimpiasPermitidas(player2.getCarrerasLimpiasPermitidas()+1);
+							player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
 							gamePlay.carrerasPorEntrada(0, 1, gamePlay.getVisitante());
 							llenarPizarraVisitante();
 							llenarPizarraLocal();
@@ -1950,6 +1974,9 @@ public class SimuladorPartido extends JDialog {
 						cbxCarrerasLocal.setEnabled(true);
 						btnCarreraLocal.setEnabled(true);
 						btnCambioEntradaLocal.setEnabled(true);
+						if (gamePlay.getEntradas()>=9) {
+							btnTerminarPartido.setEnabled(true);
+						}
 						lblPartido.setText(""+gamePlay.getVisitante().getNombre()+" a la Defensiva vs "+gamePlay.getLocal().getNombre()+" a la Ofensiva");
 						panelLocal.setVisible(false);
 						panelVisitante.setVisible(true);
@@ -1996,6 +2023,7 @@ public class SimuladorPartido extends JDialog {
 							
 							player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherVis.getText());
 							player2.setCarrerasLimpiasPermitidas(player2.getCarrerasLimpiasPermitidas()+1);
+							player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
 							gamePlay.carrerasPorEntrada(1, 0, gamePlay.getLocal());
 							llenarPizarraVisitante();
 							llenarPizarraLocal();
@@ -2018,12 +2046,10 @@ public class SimuladorPartido extends JDialog {
 						btnCarreraLocal.setEnabled(false);
 						btnCambioEntradaLocal.setEnabled(false);
 						gamePlay.setEntradas(gamePlay.getEntradas()+1);
-						if (gamePlay.getEntradas()>=9) {
-							btnTerminarPartido.setEnabled(true);
-						}
 						lblPartido.setText(""+gamePlay.getLocal().getNombre()+" a la Defensiva vs "+gamePlay.getVisitante().getNombre()+" a la Ofensiva");
 						panelLocal.setVisible(true);
 						panelVisitante.setVisible(false);
+						lblEntradaI.setText("Entrada: "+gamePlay.getEntradas());
 					}
 				});
 				btnCambioEntradaLocal.setEnabled(false);
@@ -2071,9 +2097,9 @@ public class SimuladorPartido extends JDialog {
 							gamePlay.setErroresLocal(iz);
 							
 							x = Integer.parseInt(txtHitsVisi.getText().trim());
-							gamePlay.setErroresVisitante(x);
+							gamePlay.setHitsVisitante(x);
 							xz = Integer.parseInt(txtHistLocal.getText().trim());
-							gamePlay.setErroresLocal(xz);
+							gamePlay.setHitsLocal(xz);
 							
 							
 							if (gamePlay.ganador().equals(gamePlay.getVisitante())) {
@@ -2081,13 +2107,27 @@ public class SimuladorPartido extends JDialog {
 								gamePlay.getLocal().setPartidosPerdidos(gamePlay.getLocal().getPartidosPerdidos()+1);
 								p1.setJuegosGanados(p1.getJuegosGanados()+1);
 								p2.setJuegosPerdidos(p2.getJuegosPerdidos()+1);
-								JOptionPane.showMessageDialog(null, "Los Ganadores Son: "+gamePlay.getVisitante().getNombre(), null, JOptionPane.INFORMATION_MESSAGE);
+								int option = JOptionPane.showConfirmDialog(null, "¿El Juego fue Salvado por el Pitcher?", null, JOptionPane.YES_NO_OPTION);
+								if (option == JOptionPane.YES_OPTION) {
+									p1.setJuegosSalvados(p1.getJuegosSalvados()+1);
+								}
+								JOptionPane.showMessageDialog(null, "Terminado!");
+								dispose();
+								Pizarra piz = new Pizarra(gamePlay);
+								piz.setVisible(true);
 							} else if (gamePlay.ganador().equals(gamePlay.getLocal())) {
 								gamePlay.getLocal().setPartidosGanados(gamePlay.getLocal().getPartidosGanados()+1);
 								gamePlay.getVisitante().setPartidosPerdidos(gamePlay.getVisitante().getPartidosPerdidos()+1);
 								p2.setJuegosGanados(p2.getJuegosGanados()+1);
 								p1.setJuegosPerdidos(p1.getJuegosPerdidos()+1);
-								JOptionPane.showMessageDialog(null, "Los Ganadores Son: "+gamePlay.getLocal().getNombre(), null, JOptionPane.INFORMATION_MESSAGE);
+								int option = JOptionPane.showConfirmDialog(null, "¿El Juego fue Salvado por el Pitcher?", null, JOptionPane.YES_NO_OPTION);
+								if (option == JOptionPane.YES_OPTION) {
+									p2.setJuegosSalvados(p2.getJuegosSalvados()+1);
+								}
+								JOptionPane.showMessageDialog(null, "Terminado!");
+								dispose();
+								Pizarra piz = new Pizarra(gamePlay);
+								piz.setVisible(true);
 							}
 						}
 					}
@@ -2106,6 +2146,14 @@ public class SimuladorPartido extends JDialog {
 			panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 			panel_1.setBounds(15, 149, 907, 45);
 			contentPanel.add(panel_1);
+			panel_1.setLayout(null);
+			{
+				lblEntradaI = new JLabel("");
+				lblEntradaI.setForeground(Color.WHITE);
+				lblEntradaI.setFont(new Font("Tahoma", Font.BOLD, 13));
+				lblEntradaI.setBounds(10, 15, 108, 16);
+				panel_1.add(lblEntradaI);
+			}
 		}
 		{
 			panel_2 = new JPanel();

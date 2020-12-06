@@ -179,7 +179,7 @@ public class RegistrarLesion extends JDialog {
 			cbxCategoria = new JComboBox<String>();
 			cbxCategoria.setBackground(Color.WHITE);
 			cbxCategoria.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			cbxCategoria.setModel(new DefaultComboBoxModel<String>(new String[] {"<Seleccione>", "Cabeza", "Cuello", "Hombro", "Brazo", "Mano", "Costillas", "Pelvis", "Pierna", "Tobillo", "Pie"}));
+			cbxCategoria.setModel(new DefaultComboBoxModel<String>(new String[] {"<Seleccione>", "Cabeza", "Hombro", "Brazo", "Espalda", "Pierna", "Pie"}));
 			cbxCategoria.setBounds(119, 183, 122, 24);
 			contentPanel.add(cbxCategoria);
 		}
@@ -221,7 +221,7 @@ public class RegistrarLesion extends JDialog {
 						player = Liga.getInstance().buscarJugadorPorNombre(cbxJugador.getSelectedItem().toString());
 						broken = new Lesion(player, team, cbxCategoria.getSelectedItem().toString(), txtDiag.getText(), culmi);
 						if (player.insertarLesion(broken) == true) {
-							JOptionPane.showMessageDialog(null, "Agregado Satisfactoriamente", null, JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Lesión Agregada", null, JOptionPane.WARNING_MESSAGE);
 							clean();
 						}
 					}

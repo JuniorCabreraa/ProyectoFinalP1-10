@@ -282,4 +282,44 @@ public class Liga implements Serializable{
 			System.out.println("Error al reproducir el sonido.3");
 		}
 	}
+
+	//Grafico
+	public int[] cantidadLesionesCat() {
+		int[]aux = new int [6];
+		int cabeza = 0, hombro = 0, brazo = 0, espalda = 0, pierna = 0, pie = 0;
+		
+		for (Jugador player : Liga.getInstance().getListaJugadores()) {
+			for (Lesion les : player.getMisLesiones()) {
+				if (les.isActiva()) {
+					if (les.getCategoria().equalsIgnoreCase("Cabeza")) {
+						cabeza++;
+					}
+					if (les.getCategoria().equalsIgnoreCase("Hombro")) {
+						hombro++;
+					}
+					if (les.getCategoria().equalsIgnoreCase("Brazo")) {
+						brazo++;
+					}
+					if (les.getCategoria().equalsIgnoreCase("Espalda")) {
+						espalda++;
+					}
+					if (les.getCategoria().equalsIgnoreCase("Pierna")) {
+						pierna++;
+					}
+					if (les.getCategoria().equalsIgnoreCase("Pie")) {
+						pie++;
+					}
+				}
+			}
+		}
+		
+		aux[0] = cabeza;
+		aux[1] = hombro;
+		aux[2] = brazo;
+		aux[3] = espalda;
+		aux[4] = pierna;
+		aux[5] = pie;
+		
+		return aux;
+	}
 }

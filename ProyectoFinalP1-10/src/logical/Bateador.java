@@ -129,51 +129,51 @@ public class Bateador extends Jugador implements Serializable{
 	}
 	
 	//Promedio de Bateo	
-	public BigDecimal promedioBateo() {
+	public double promedioBateo() {
 		float x = ((float)hits/turnosBate);
-		BigDecimal avg = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP);
+		double avg = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP).doubleValue();
 		return avg;
 	}
 	
 	//Porcentaje de Alcanzar Bases	
-	public BigDecimal porcentajeAlcanceBases() {
+	public double porcentajeAlcanceBases() {
 		float x = (((float)hits+boletosBase+golpeado)/(hits+boletosBase+golpeado+elevadosSacrificios));
-		BigDecimal obp = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP);
+		double obp = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP).doubleValue();
 		return obp;
 	}
 	
 	//Porcentaje de Slugging (Indice de bases totales por turnos al bate)	
-	public BigDecimal slugging() {
+	public double slugging() {
 		float x = ((((float)hits)+(2*dobles)+(3*triples)+(4*homeruns))/(turnosBate));
-		BigDecimal slg = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP);
+		double slg = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP).doubleValue();
 		return slg;
 	}
 	
 	//Porcentaje de Alcanzar Mas Bases Por Slugging
-	public BigDecimal porcentajeAlcanceBasesPorSlugging() {
-		BigDecimal x = slugging().add(porcentajeAlcanceBases());
-		BigDecimal ops = x.setScale(3, RoundingMode.HALF_UP);
+	public double porcentajeAlcanceBasesPorSlugging() {
+		double x = slugging() + porcentajeAlcanceBases();
+		double ops = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP).doubleValue();
 		return ops;
 	}
 	
 	//Poder Aislado (ISO)
-	public BigDecimal poderAislado() {
-		BigDecimal x = slugging().subtract(promedioBateo());
-		BigDecimal iso = x.setScale(3, RoundingMode.HALF_UP);
+	public double poderAislado() {
+		double x = slugging()-promedioBateo();
+		double iso = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP).doubleValue();
 		return iso;
 	}
 	
 	//Porcentaje de Fildeo
-	public BigDecimal porcentajeFildeo() {
+	public double porcentajeFildeo() {
 		float x = (((float)outsRealizados+asistencias)/(outsRealizados+asistencias+errores));
-		BigDecimal fielding = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP);
+		double fielding = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP).doubleValue();
 		return fielding;
 	}
 	
 	//Factor de Alcance
-	public BigDecimal factorAlcance() {
+	public double factorAlcance() {
 		float x = (((float)outsRealizados+asistencias)/9);
-		BigDecimal rf = new BigDecimal(x).setScale(2, RoundingMode.HALF_UP);
+		double rf = new BigDecimal(x).setScale(2, RoundingMode.HALF_UP).doubleValue();
 		return rf;
 	}
 	

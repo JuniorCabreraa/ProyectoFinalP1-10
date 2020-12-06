@@ -162,6 +162,7 @@ public class Jugador implements Serializable{
 					if (lesion.getJugador().equals(player)) {
 						equipo.eliminarJugadorAlineacion(lesion.getJugador());
 						JOptionPane.showMessageDialog(null, "Jugador Eliminado de Alineación", null, JOptionPane.INFORMATION_MESSAGE);
+						return aux;
 					}
 				}
 			}
@@ -170,11 +171,13 @@ public class Jugador implements Serializable{
 					if (lesion.getJugador().equals(player)) {
 						equipo.eliminarLanzador((Lanzador) lesion.getJugador());
 						JOptionPane.showMessageDialog(null, "Lanzador Eliminado de Alineación", null, JOptionPane.INFORMATION_MESSAGE);
+						return aux;
 					}
 				}
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Ya está lesionado", null, JOptionPane.INFORMATION_MESSAGE);
+			return aux;
 		}
 		
 		return aux;

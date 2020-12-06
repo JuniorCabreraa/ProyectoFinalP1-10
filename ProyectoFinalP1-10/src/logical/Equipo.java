@@ -243,8 +243,8 @@ public class Equipo implements Serializable{
 	
 	//Insertar Jugador
 	public void insertarJugador(Jugador jugador) {
-			misJugadores.add(jugador);
-			Liga.getInstance().insertarJugador(jugador);
+		misJugadores.add(jugador);
+		Liga.getInstance().insertarJugador(jugador);
 	}
 
 	//Eliminar Jugador
@@ -331,9 +331,9 @@ public class Equipo implements Serializable{
 	}
 	
 	//Promedio de Bateo	
-	public BigDecimal promedioBateo() {
+	public double promedioBateo() {
 		float x = ((float)hits/turnosBate);
-		BigDecimal avg = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP);
+		double avg = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP).doubleValue();
 		return avg;
 	}
 	

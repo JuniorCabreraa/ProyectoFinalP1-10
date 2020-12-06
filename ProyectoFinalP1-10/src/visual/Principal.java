@@ -357,6 +357,12 @@ public class Principal extends JFrame {
 					}
 					{
 						mntmNewMenuItem_10 = new JMenuItem("Cambiar Equipo");
+						mntmNewMenuItem_10.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								CambiarEquipo cbE = new CambiarEquipo();
+								cbE.setVisible(true);
+							}
+						});
 						mntmNewMenuItem_10.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/change.png")));
 						mnNewMenu_5.add(mntmNewMenuItem_10);
 					}
@@ -379,6 +385,12 @@ public class Principal extends JFrame {
 				}
 				{
 					mntmNewMenuItem_12 = new JMenuItem("Gr\u00E1fico Lesionados");
+					mntmNewMenuItem_12.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							GraficoLesion gles = new GraficoLesion();
+							gles.setVisible(true);
+						}
+					});
 					mntmNewMenuItem_12.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/barsgraphic.png")));
 					mnNewMenu_4.add(mntmNewMenuItem_12);
 				}
@@ -393,16 +405,48 @@ public class Principal extends JFrame {
 					mnNewMenu_6.add(mnNewMenu_7);
 					{
 						mntmNewMenuItem_13 = new JMenuItem("Top 10 Bateadores");
+						mntmNewMenuItem_13.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								try {
+									Lista10Bateadores list10B = new Lista10Bateadores();
+									list10B.setVisible(true);
+								} catch (ParseException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}							}
+						});
 						mntmNewMenuItem_13.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/bateador.png")));
 						mnNewMenu_7.add(mntmNewMenuItem_13);
 					}
 					{
 						mntmNewMenuItem_14 = new JMenuItem("Top 10 Lanzadores");
+						mntmNewMenuItem_14.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								try {
+									Lista10Lanzadores list10L = new Lista10Lanzadores();
+									list10L.setVisible(true);
+								} catch (ParseException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						});
 						mntmNewMenuItem_14.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/pitcher.png")));
 						mnNewMenu_7.add(mntmNewMenuItem_14);
 					}
 					{
 						mntmNewMenuItem_15 = new JMenuItem("Todos los Jugadores");
+						mntmNewMenuItem_15.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								try {
+									ListaEstadisticasJugadores listEsta = new ListaEstadisticasJugadores();
+									listEsta.setVisible(true);
+								} catch (ParseException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						});
 						mntmNewMenuItem_15.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/players.png")));
 						mnNewMenu_7.add(mntmNewMenuItem_15);
 					}
@@ -503,7 +547,10 @@ public class Principal extends JFrame {
 				        	aliJue.setVisible(true);
 				        } else {
 				         	JOptionPane.showMessageDialog(null, "Debe esperar la fecha del partido", "Partido No: "+game.getNoPartido()+" - "+game.getLocal().getNombre()+" vs "+game.getVisitante().getNombre(), JOptionPane.INFORMATION_MESSAGE);
-						}
+				         	btnEliminar.setEnabled(false);
+							btnRepro.setEnabled(false);
+							btnIniciar.setEnabled(false);
+				        }
 				        
 					}
 				});
@@ -546,6 +593,10 @@ public class Principal extends JFrame {
 							btnIniciar.setEnabled(false);
 							game = null;
 							letsPlay = null;
+						} else {
+							btnEliminar.setEnabled(false);
+							btnRepro.setEnabled(false);
+							btnIniciar.setEnabled(false);
 						}
 					}
 				});
@@ -570,6 +621,10 @@ public class Principal extends JFrame {
 							btnIniciar.setEnabled(false);
 							game = null;
 							letsPlay = null;
+						} else {
+							btnEliminar.setEnabled(false);
+							btnRepro.setEnabled(false);
+							btnIniciar.setEnabled(false);
 						}
 					}
 				});

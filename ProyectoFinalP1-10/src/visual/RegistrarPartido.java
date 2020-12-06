@@ -49,7 +49,6 @@ public class RegistrarPartido extends JDialog {
 	private JComboBox<String> cbxLocal;
 	private JComboBox<String> cbxVisitante;
 	private JSpinner spnHora;
-	private JButton btnNewButton;
 
 	/**
 	 * Launch the application.
@@ -250,33 +249,6 @@ public class RegistrarPartido extends JDialog {
 			//spnHora.setValue(new Date());
 			spnHora.setBounds(376, 114, 118, 24);
 			contentPanel.add(spnHora);
-		}
-		{
-			btnNewButton = new JButton("New button");
-			btnNewButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					SimpleDateFormat formato = new SimpleDateFormat("hh:mm a");
-					DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
-					Date x = (Date)spnHora.getValue();
-					String show = dateFormat.format(x);
-					
-					Date last = null;
-					try {
-						last = formato.parse(show);
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					JOptionPane.showMessageDialog(null, x, null, JOptionPane.ERROR_MESSAGE);
-					JOptionPane.showMessageDialog(null, show, null, JOptionPane.ERROR_MESSAGE);
-					JOptionPane.showMessageDialog(null, last, null, JOptionPane.ERROR_MESSAGE);
-					if (Calendar.getInstance().getTime().before(last)) {
-						JOptionPane.showMessageDialog(null, last, "PERFECTO", JOptionPane.ERROR_MESSAGE);
-					}
-				}
-			});
-			btnNewButton.setBounds(405, 239, 89, 23);
-			contentPanel.add(btnNewButton);
 		}
 		{
 			JPanel buttonPane = new JPanel();

@@ -139,23 +139,23 @@ public class Lanzador extends Jugador implements Serializable{
 	}
 	
 	//Entradas lanzadas
-	public float entradasLanzadas() {
+	public double entradasLanzadas() {
 		float x = (float)outs/3;
-		BigDecimal entradas = new BigDecimal(x).setScale(1, RoundingMode.HALF_UP);
-		return entradas.floatValue();
+		double entradas = new BigDecimal(x).setScale(1, RoundingMode.HALF_UP).doubleValue();
+		return entradas;
 	}
 	
 	//Porcentaje de carreras limpias
-	public BigDecimal porcentajeCarrerasLimpias() {
-		float x = ((float)carrerasLimpiasPermitidas*9)/entradasLanzadas();
-		BigDecimal porcentaje = new BigDecimal(x).setScale(2, RoundingMode.HALF_UP);
+	public double porcentajeCarrerasLimpias() {
+		double x = ((double)carrerasLimpiasPermitidas*9)/entradasLanzadas();
+		double porcentaje = new BigDecimal(x).setScale(2, RoundingMode.HALF_UP).doubleValue();
 		return porcentaje;
 	}
 	
 	//Boletos y hits por entradas lanzadas
-	public BigDecimal boletosYhits() {
-		float x = ((float)boletosBase+hitsPermitidos)/entradasLanzadas();
-		BigDecimal whip = new BigDecimal(x).setScale(2, RoundingMode.HALF_UP);
+	public double boletosYhits() {
+		double x = ((double)boletosBase+hitsPermitidos)/entradasLanzadas();
+		double whip = new BigDecimal(x).setScale(2, RoundingMode.HALF_UP).doubleValue();
 		return whip;
 	}
 	

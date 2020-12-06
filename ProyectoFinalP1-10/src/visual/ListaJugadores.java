@@ -117,7 +117,7 @@ public class ListaJugadores extends JDialog {
 			}
 		});
 		tableModel = new DefaultTableModel();
-		String[] columnNames = {"No Camiseta","Nombre", "Posicion", "Equipo","Tipo De Jugador"};
+		String[] columnNames = {"No Camiseta","Nombre", "Posicion", "Equipo", "Tipo De Jugador"};
 		tableModel.setColumnIdentifiers(columnNames);
 		loadJugador(0);
 		scrollPane.setViewportView(table);
@@ -208,11 +208,13 @@ public class ListaJugadores extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 
 						Jugador aux = Liga.getInstance().buscarJugadorPorNombre(name);
+						Equipo equip = null;
 
 						int delete = JOptionPane.showConfirmDialog(null, "Realmente desea Eliminar al Jugador: " + aux.getNombre(), null, JOptionPane.YES_NO_OPTION);
 						if (delete == JOptionPane.YES_OPTION)
 						{
-
+							equip = aux.getEquipo();
+							equip.eliminarJugador(aux);
 							Liga.getInstance().eliminarJugador(aux);
 							loadJugador(0);
 							btnModificar.setEnabled(false);
