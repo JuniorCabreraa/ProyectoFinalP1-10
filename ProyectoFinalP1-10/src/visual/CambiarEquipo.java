@@ -192,6 +192,10 @@ public class CambiarEquipo extends JDialog {
 							if (teamCambio.verificarNoCami(juga) == false) {
 								if (teamCambio.getMisJugadores().size() < 25) {
 									teamCambio.insertarJugador(juga);
+									if (juga instanceof Lanzador) {
+										teamCambio.insertarLanzador((Lanzador) juga);
+										team.eliminarLanzador((Lanzador) gamer);
+									}
 									team.eliminarJugador(gamer);
 									Liga.getInstance().eliminarJugador(gamer);
 									JOptionPane.showMessageDialog(null, "Agregado Satisfactoriamente", null, JOptionPane.WARNING_MESSAGE);

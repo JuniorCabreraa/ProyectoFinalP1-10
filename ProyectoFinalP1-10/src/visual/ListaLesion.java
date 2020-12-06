@@ -49,7 +49,6 @@ public class ListaLesion extends JDialog {
 	private static Object[] fila;
 	private static DefaultTableModel tableModel;
 	private JButton btnModificar;
-	private JButton btnModificar_1;
 	private JButton btnEliminar;
 	private String name;
 	private JLabel lblMostrarPorEquipo;
@@ -174,29 +173,6 @@ public class ListaLesion extends JDialog {
 					btnEliminar.setEnabled(false);
 				}
 			});
-			btnModificar_1 = new JButton("Modificar");
-			btnModificar_1.setEnabled(false);
-			btnModificar_1.setIcon(new ImageIcon(ListaLesion.class.getResource("/Imagenes/modify.png")));
-			btnModificar_1.setBackground(Color.WHITE);
-			btnModificar_1.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					RegistrarLesion mod = null;
-					try {
-						mod = new RegistrarLesion();
-					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					mod.setModal(true);
-					mod.setLocationRelativeTo(null);
-					mod.setVisible(true);
-					btnModificar.setEnabled(false);
-					btnEliminar.setEnabled(false);
-				}
-			});
-			btnModificar_1.setActionCommand("OK");
-			buttonPane.add(btnModificar_1);
-			getRootPane().setDefaultButton(btnModificar_1);
 			{
 				btnEliminar = new JButton("Eliminar");
 				btnEliminar.setIcon(new ImageIcon(ListaLesion.class.getResource("/Imagenes/change.png")));

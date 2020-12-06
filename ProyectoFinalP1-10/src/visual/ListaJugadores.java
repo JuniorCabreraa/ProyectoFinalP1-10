@@ -46,7 +46,6 @@ public class ListaJugadores extends JDialog {
 	private static JTable table;
 	private static Object[] fila;
 	private static DefaultTableModel tableModel;
-	private JButton btnModificar;
 	private JButton btnEliminar;
 	private String name;
 	private JComboBox<String> cbxTipoDeJugador;
@@ -109,7 +108,6 @@ public class ListaJugadores extends JDialog {
 
 				if(table.getSelectedRow()>=0){
 					btnEliminar.setEnabled(true);
-					btnModificar.setEnabled(true);
 					int index = table.getSelectedRow();
 					name = (String)table.getModel().getValueAt(index, 1);
 
@@ -179,27 +177,6 @@ public class ListaJugadores extends JDialog {
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-
-			btnModificar = new JButton("Modificar");
-			btnModificar.setIcon(new ImageIcon(ListaJugadores.class.getResource("/Imagenes/modify.png")));
-			btnModificar.setBackground(Color.WHITE);
-			btnModificar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					RegistrarJugador mod = null;
-					try {
-						mod = new RegistrarJugador();
-					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					mod.setVisible(true);
-					btnModificar.setEnabled(false);
-					btnEliminar.setEnabled(false);
-				}
-			});
-			btnModificar.setActionCommand("OK");
-			buttonPane.add(btnModificar);
-			getRootPane().setDefaultButton(btnModificar);
 			{
 				btnEliminar = new JButton("Eliminar");
 				btnEliminar.setBackground(Color.WHITE);
@@ -213,17 +190,19 @@ public class ListaJugadores extends JDialog {
 						int delete = JOptionPane.showConfirmDialog(null, "Realmente desea Eliminar al Jugador: " + aux.getNombre(), null, JOptionPane.YES_NO_OPTION);
 						if (delete == JOptionPane.YES_OPTION)
 						{
+							
 							equip = aux.getEquipo();
+							if (aux instanceof Lanzador) {
+								equip.eliminarLanzador((Lanzador) aux);
+							}
 							equip.eliminarJugador(aux);
 							Liga.getInstance().eliminarJugador(aux);
 							loadJugador(0);
-							btnModificar.setEnabled(false);
 							btnEliminar.setEnabled(false);
 						}
 					}
 				});
 				buttonPane.add(btnEliminar);
-				btnModificar.setEnabled(false);
 				btnEliminar.setEnabled(false);
 				btnEliminar.setActionCommand("OK");
 				buttonPane.add(btnEliminar);

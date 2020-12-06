@@ -270,7 +270,7 @@ public class Equipo implements Serializable{
 	public void insertarLanzador(Lanzador lanzador) {
 		if(lanzador.isLesionado() == true) { 
 			JOptionPane.showMessageDialog(null, "LANZADOR LESIONADO", null, JOptionPane.ERROR_MESSAGE);
-		} else if (misLanzadores.size() < 7) {
+		} else {
 			misLanzadores.add(lanzador);
 		}
 	}

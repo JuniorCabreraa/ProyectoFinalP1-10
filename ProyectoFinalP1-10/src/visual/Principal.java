@@ -1,7 +1,6 @@
 package visual;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -57,20 +56,18 @@ public class Principal extends JFrame {
 	private static JLabel lbl3;
 	private static JLabel lbl4;
 	private static JLabel lbl5;
-	private JMenu mnNewMenu;
+	private JMenu mnUsuario;
 	private JMenuItem mntmRegistrarUsuario;
 	private JMenuItem mntmGuardarDatos;
-	private JMenuItem mntmModificarUsuario;
-	private JMenu mnNewMenu_1;
+	private JMenu mnPartidos;
 	private JMenu mnNewMenu_2;
 	private JMenuItem mntmNewMenuItem;
 	private JMenuItem mntmNewMenuItem_2;
 	private JMenuItem mntmNewMenuItem_3;
-	private JMenu mnNewMenu_3;
+	private JMenu mnEquipos;
 	private JMenuItem mntmNewMenuItem_4;
-	private JMenuItem mntmNewMenuItem_5;
 	private JMenuItem mntmNewMenuItem_6;
-	private JMenu mnNewMenu_4;
+	private JMenu mntJugadores;
 	private JMenuItem mntmNewMenuItem_7;
 	private JMenu mnNewMenu_5;
 	private JMenuItem mntmNewMenuItem_8;
@@ -78,7 +75,7 @@ public class Principal extends JFrame {
 	private JMenuItem mntmNewMenuItem_10;
 	private JMenuItem mntmNewMenuItem_11;
 	private JMenuItem mntmNewMenuItem_12;
-	private JMenu mnNewMenu_6;
+	private JMenu mnEstadisticas;
 	private JMenu mnNewMenu_7;
 	private JMenuItem mntmNewMenuItem_13;
 	private JMenuItem mntmNewMenuItem_14;
@@ -101,10 +98,10 @@ public class Principal extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	/*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				Liga.getInstance().loadData();
 				try {
 					Principal frame = new Principal();
 					frame.setVisible(true);
@@ -114,7 +111,7 @@ public class Principal extends JFrame {
 			}
 		});
 	}
-
+	*/
 	/**
 	 * Create the frame.
 	 */
@@ -136,6 +133,12 @@ public class Principal extends JFrame {
 				Wallpaper wp = new Wallpaper();
 				wp.start();
 				calendarioPartidos(0);
+				if (!Liga.getInstance().getLoginUser().getType().equalsIgnoreCase("Administrador")) {
+					mnUsuario.setEnabled(false);
+					mnPartidos.setEnabled(false);
+					mnEquipos.setEnabled(false);
+					mntJugadores.setEnabled(false);
+				}
 			}
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -164,9 +167,9 @@ public class Principal extends JFrame {
 			menuBar = new JMenuBar();
 			setJMenuBar(menuBar);
 			{
-				mnNewMenu = new JMenu("Usuario");
-				mnNewMenu.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/User.png")));
-				menuBar.add(mnNewMenu);
+				mnUsuario = new JMenu("Usuario");
+				mnUsuario.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/User.png")));
+				menuBar.add(mnUsuario);
 				{
 					mntmRegistrarUsuario = new JMenuItem("Registrar Nuevo Usuario");
 					mntmRegistrarUsuario.addActionListener(new ActionListener() {
@@ -176,17 +179,7 @@ public class Principal extends JFrame {
 						}
 					});
 					mntmRegistrarUsuario.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/add.png")));
-					mnNewMenu.add(mntmRegistrarUsuario);
-				}
-				{
-					mntmModificarUsuario = new JMenuItem("Modificar Usuario");
-					mntmModificarUsuario.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							calendarioPartidos(0);
-						}
-					});
-					mntmModificarUsuario.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/modify.png")));
-					mnNewMenu.add(mntmModificarUsuario);
+					mnUsuario.add(mntmRegistrarUsuario);
 				}
 				{
 					mntmGuardarDatos = new JMenuItem("Guardar Datos");
@@ -196,17 +189,17 @@ public class Principal extends JFrame {
 						}
 					});
 					mntmGuardarDatos.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/save.png")));
-					mnNewMenu.add(mntmGuardarDatos);
+					mnUsuario.add(mntmGuardarDatos);
 				}
 			}
 			{
-				mnNewMenu_1 = new JMenu("Partidos");
-				mnNewMenu_1.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/MLB-logo.jpg")));
-				menuBar.add(mnNewMenu_1);
+				mnPartidos = new JMenu("Partidos");
+				mnPartidos.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/MLB-logo.jpg")));
+				menuBar.add(mnPartidos);
 				{
 					mnNewMenu_2 = new JMenu("Mostrar Partidos");
 					mnNewMenu_2.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/bateador.png")));
-					mnNewMenu_1.add(mnNewMenu_2);
+					mnPartidos.add(mnNewMenu_2);
 					{
 						mntmNewMenuItem = new JMenuItem("Calendario de Juego");
 						mntmNewMenuItem.addActionListener(new ActionListener() {
@@ -250,13 +243,13 @@ public class Principal extends JFrame {
 						}
 					});
 					mntmNewMenuItem_2.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/add.png")));
-					mnNewMenu_1.add(mntmNewMenuItem_2);
+					mnPartidos.add(mntmNewMenuItem_2);
 				}
 			}
 			{
-				mnNewMenu_3 = new JMenu("Equipos");
-				mnNewMenu_3.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/team.png")));
-				menuBar.add(mnNewMenu_3);
+				mnEquipos = new JMenu("Equipos");
+				mnEquipos.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/team.png")));
+				menuBar.add(mnEquipos);
 				{
 					mntmNewMenuItem_4 = new JMenuItem("Crear Equipo");
 					mntmNewMenuItem_4.addActionListener(new ActionListener() {
@@ -272,12 +265,7 @@ public class Principal extends JFrame {
 						}
 					});
 					mntmNewMenuItem_4.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/add.png")));
-					mnNewMenu_3.add(mntmNewMenuItem_4);
-				}
-				{
-					mntmNewMenuItem_5 = new JMenuItem("Manejar Equipo");
-					mntmNewMenuItem_5.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/modify.png")));
-					mnNewMenu_3.add(mntmNewMenuItem_5);
+					mnEquipos.add(mntmNewMenuItem_4);
 				}
 				{
 					mntmNewMenuItem_6 = new JMenuItem("Mostrar Equipos");
@@ -293,13 +281,13 @@ public class Principal extends JFrame {
 						}
 					});
 					mntmNewMenuItem_6.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/list.png")));
-					mnNewMenu_3.add(mntmNewMenuItem_6);
+					mnEquipos.add(mntmNewMenuItem_6);
 				}
 			}
 			{
-				mnNewMenu_4 = new JMenu("Jugadores");
-				mnNewMenu_4.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/players.png")));
-				menuBar.add(mnNewMenu_4);
+				mntJugadores = new JMenu("Jugadores");
+				mntJugadores.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/players.png")));
+				menuBar.add(mntJugadores);
 				{
 					mntmNewMenuItem_7 = new JMenuItem("Crear Jugador");
 					mntmNewMenuItem_7.addActionListener(new ActionListener() {
@@ -315,12 +303,12 @@ public class Principal extends JFrame {
 						}
 					});
 					mntmNewMenuItem_7.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/add.png")));
-					mnNewMenu_4.add(mntmNewMenuItem_7);
+					mntJugadores.add(mntmNewMenuItem_7);
 				}
 				{
 					mnNewMenu_5 = new JMenu("Manejar Jugador");
 					mnNewMenu_5.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/modify.png")));
-					mnNewMenu_4.add(mnNewMenu_5);
+					mntJugadores.add(mnNewMenu_5);
 					{
 						mntmNewMenuItem_8 = new JMenuItem("Insertar Lesi\u00F3n");
 						mntmNewMenuItem_8.addActionListener(new ActionListener() {
@@ -381,7 +369,7 @@ public class Principal extends JFrame {
 						}
 					});
 					mntmNewMenuItem_11.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/list.png")));
-					mnNewMenu_4.add(mntmNewMenuItem_11);
+					mntJugadores.add(mntmNewMenuItem_11);
 				}
 				{
 					mntmNewMenuItem_12 = new JMenuItem("Gr\u00E1fico Lesionados");
@@ -392,17 +380,17 @@ public class Principal extends JFrame {
 						}
 					});
 					mntmNewMenuItem_12.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/barsgraphic.png")));
-					mnNewMenu_4.add(mntmNewMenuItem_12);
+					mntJugadores.add(mntmNewMenuItem_12);
 				}
 			}
 			{
-				mnNewMenu_6 = new JMenu("Estad\u00EDsticas");
-				mnNewMenu_6.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/barsgraphic.png")));
-				menuBar.add(mnNewMenu_6);
+				mnEstadisticas = new JMenu("Estad\u00EDsticas");
+				mnEstadisticas.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/barsgraphic.png")));
+				menuBar.add(mnEstadisticas);
 				{
 					mnNewMenu_7 = new JMenu("Jugadores");
 					mnNewMenu_7.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/team.png")));
-					mnNewMenu_6.add(mnNewMenu_7);
+					mnEstadisticas.add(mnNewMenu_7);
 					{
 						mntmNewMenuItem_13 = new JMenuItem("Top 10 Bateadores");
 						mntmNewMenuItem_13.addActionListener(new ActionListener() {
@@ -453,8 +441,19 @@ public class Principal extends JFrame {
 				}
 				{
 					mntmNewMenuItem_16 = new JMenuItem("Equipos");
+					mntmNewMenuItem_16.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							try {
+								ListaEstadisticasEquipos listEstEq = new ListaEstadisticasEquipos();
+								listEstEq.setVisible(true);
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					});
 					mntmNewMenuItem_16.setIcon(new ImageIcon(Principal.class.getResource("/Imagenes/estadioteam.png")));
-					mnNewMenu_6.add(mntmNewMenuItem_16);
+					mnEstadisticas.add(mntmNewMenuItem_16);
 				}
 			}
 		}
@@ -464,6 +463,7 @@ public class Principal extends JFrame {
 		contentPane.setLayout(null);
 		{
 			panelCalendario = new JPanel();
+			panelCalendario.setVisible(false);
 			panelCalendario.setOpaque(false);
 			panelCalendario.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Calendario de Juegos", TitledBorder.CENTER, TitledBorder.TOP, null, Color.WHITE));
 			panelCalendario.setBounds(696, 28, 644, 240);

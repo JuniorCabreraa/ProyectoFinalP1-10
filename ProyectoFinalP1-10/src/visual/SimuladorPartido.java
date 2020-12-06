@@ -175,6 +175,10 @@ public class SimuladorPartido extends JDialog {
 	private JLabel lblNewLabel_2;
 	private JLabel lblFondaso;
 	private JLabel lblEntradaI;
+	private JButton btnCambioPitcherLocal;
+	private JButton btnCambioPitcherVis;
+	private JComboBox<String> cbxCambioPitVis;
+	private JComboBox<String> cbxCambioPitLocal;
 
 	/**
 	 * Launch the application.
@@ -203,8 +207,18 @@ public class SimuladorPartido extends JDialog {
 				llenarLocal();
 				llenarBateadoresLocal();
 				llenarBateadoresVisitante();
+				llenarPitchersVis();
+				llenarPitchersLocal();
 				lblPartido.setText(""+gamePlay.getLocal().getNombre()+" a la Defensiva vs "+gamePlay.getVisitante().getNombre()+" a la Ofensiva");
 				lblEntradaI.setText("Entrada: "+gamePlay.getEntradas());
+				Lanzador p1 = null;
+				Lanzador p2 = null;
+				p1 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherVis.getText());
+				p2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherLocal.getText());
+				p1.setJuegosLanzados(p1.getJuegosLanzados()+1);
+				p2.setJuegosLanzados(p1.getJuegosLanzados()+1);
+				p1.setAperturas(p1.getAperturas()+1);
+				p2.setAperturas(p1.getAperturas()+1);
 			}
 		});
 		gamePlay = juego;
@@ -222,13 +236,6 @@ public class SimuladorPartido extends JDialog {
 			panelVisitante = new JPanel();
 			panelVisitante.setVisible(false);
 			{
-				lblPartido = new JLabel("");
-				lblPartido.setForeground(Color.WHITE);
-				lblPartido.setFont(new Font("Tahoma", Font.BOLD, 15));
-				lblPartido.setBounds(275, 161, 517, 23);
-				contentPanel.add(lblPartido);
-			}
-			{
 				panelLocal = new JPanel();
 				panelLocal.setBackground(new Color(255, 255, 255));
 				panelLocal.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -245,6 +252,37 @@ public class SimuladorPartido extends JDialog {
 							player2.setCarrerasLimpiasPermitidas(player2.getCarrerasLimpiasPermitidas()-1);
 						}
 					});
+					{
+						cbxCambioPitLocal = new JComboBox<String>();
+						cbxCambioPitLocal.setVisible(false);
+						cbxCambioPitLocal.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								Lanzador p1 = null;
+								txtPitcherLocal.setText(cbxCambioPitLocal.getSelectedItem().toString());
+								p1 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(cbxCambioPitLocal.getSelectedItem().toString());
+								p1.setJuegosLanzados(p1.getJuegosLanzados()+1);
+								cbxCambioPitLocal.setVisible(false);
+							}
+						});
+						cbxCambioPitLocal.setModel(new DefaultComboBoxModel<String>(new String[] {"<Cambio Pitcher>"}));
+						cbxCambioPitLocal.setForeground(Color.WHITE);
+						cbxCambioPitLocal.setBackground(Color.BLACK);
+						cbxCambioPitLocal.setBounds(380, 338, 138, 24);
+						panelLocal.add(cbxCambioPitLocal);
+					}
+					{
+						btnCambioPitcherLocal = new JButton("CP");
+						btnCambioPitcherLocal.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								cbxCambioPitLocal.setVisible(true);
+							}
+						});
+						btnCambioPitcherLocal.setBackground(Color.BLACK);
+						btnCambioPitcherLocal.setFont(new Font("Tahoma", Font.PLAIN, 12));
+						btnCambioPitcherLocal.setForeground(Color.WHITE);
+						btnCambioPitcherLocal.setBounds(848, 424, 49, 27);
+						panelLocal.add(btnCambioPitcherLocal);
+					}
 					btnCS_PitcherLocal.setForeground(Color.WHITE);
 					btnCS_PitcherLocal.setFont(new Font("Tahoma", Font.BOLD, 10));
 					btnCS_PitcherLocal.setBackground(Color.DARK_GRAY);
@@ -355,6 +393,7 @@ public class SimuladorPartido extends JDialog {
 								player.setTriples(player.getTriples()+1);
 								player.setHits(player.getHits()+1);
 								gamePlay.getVisitante().setTriples(gamePlay.getVisitante().getTriples()+1);
+								gamePlay.getVisitante().setHits(gamePlay.getVisitante().getHits()+1);
 								player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherLocal.getText());
 								player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
 								
@@ -383,6 +422,7 @@ public class SimuladorPartido extends JDialog {
 								player.setHomeruns(player.getHomeruns()+1);
 								player.setHits(player.getHits()+1);
 								gamePlay.getVisitante().setHomeruns(gamePlay.getVisitante().getHomeruns()+1);
+								gamePlay.getVisitante().setHits(gamePlay.getVisitante().getHits()+1);
 								player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherLocal.getText());
 								player2.setHomerunsPermitidos(player2.getHomerunsPermitidos()+1);
 								
@@ -395,7 +435,7 @@ public class SimuladorPartido extends JDialog {
 								//player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherLocal.getText());
 								player2.setCarrerasLimpiasPermitidas(player2.getCarrerasLimpiasPermitidas()+1);
 								player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
-								
+								player2.setCarrerasPermitidas(player2.getCarrerasLimpiasPermitidas()+player2.getCarrerasSuciasPermitidas());
 								x = Integer.parseInt(txtHitsVisi.getText().trim());
 								x = x + 1;
 								txtHitsVisi.setText(""+x);
@@ -423,6 +463,7 @@ public class SimuladorPartido extends JDialog {
 								player.setDobles(player.getDobles()+1);
 								player.setHits(player.getHits()+1);
 								gamePlay.getVisitante().setDobles(gamePlay.getVisitante().getDobles()+1);
+								gamePlay.getVisitante().setHits(gamePlay.getVisitante().getHits()+1);
 								player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherLocal.getText());
 								player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
 								
@@ -951,7 +992,7 @@ public class SimuladorPartido extends JDialog {
 					});
 					cbxBateadorVisitante.setForeground(Color.WHITE);
 					cbxBateadorVisitante.setBackground(Color.DARK_GRAY);
-					cbxBateadorVisitante.setModel(new DefaultComboBoxModel<String>(new String[] {"<Batea>", "1", "2", "3", "4"}));
+					cbxBateadorVisitante.setModel(new DefaultComboBoxModel<String>(new String[] {"<Batea>"}));
 					cbxBateadorVisitante.setBounds(286, 398, 138, 23);
 					panelLocal.add(cbxBateadorVisitante);
 				}
@@ -977,6 +1018,37 @@ public class SimuladorPartido extends JDialog {
 						player2.setCarrerasLimpiasPermitidas(player2.getCarrerasLimpiasPermitidas()-1);
 					}
 				});
+				{
+					cbxCambioPitVis = new JComboBox<String>();
+					cbxCambioPitVis.setVisible(false);
+					cbxCambioPitVis.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							Lanzador p1 = null;
+							txtPitcherVis.setText(cbxCambioPitVis.getSelectedItem().toString());
+							p1 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(cbxCambioPitVis.getSelectedItem().toString());
+							p1.setJuegosLanzados(p1.getJuegosLanzados()+1);
+							cbxCambioPitVis.setVisible(false);
+						}
+					});
+					cbxCambioPitVis.setModel(new DefaultComboBoxModel<String>(new String[] {"<Cambio Pitcher>"}));
+					cbxCambioPitVis.setForeground(Color.WHITE);
+					cbxCambioPitVis.setBackground(Color.BLACK);
+					cbxCambioPitVis.setBounds(380, 338, 138, 24);
+					panelVisitante.add(cbxCambioPitVis);
+				}
+				{
+					btnCambioPitcherVis = new JButton("CP");
+					btnCambioPitcherVis.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							cbxCambioPitVis.setVisible(true);
+						}
+					});
+					btnCambioPitcherVis.setForeground(Color.WHITE);
+					btnCambioPitcherVis.setFont(new Font("Tahoma", Font.PLAIN, 12));
+					btnCambioPitcherVis.setBackground(Color.BLACK);
+					btnCambioPitcherVis.setBounds(848, 424, 49, 27);
+					panelVisitante.add(btnCambioPitcherVis);
+				}
 				btnCS_PitcherVis.setForeground(Color.WHITE);
 				btnCS_PitcherVis.setFont(new Font("Tahoma", Font.BOLD, 10));
 				btnCS_PitcherVis.setBackground(Color.DARK_GRAY);
@@ -1087,6 +1159,7 @@ public class SimuladorPartido extends JDialog {
 							player.setTriples(player.getTriples()+1);
 							player.setHits(player.getHits()+1);
 							gamePlay.getLocal().setTriples(gamePlay.getLocal().getTriples()+1);
+							gamePlay.getLocal().setHits(gamePlay.getLocal().getHits()+1);
 							player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherVis.getText());
 							player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
 							
@@ -1115,10 +1188,10 @@ public class SimuladorPartido extends JDialog {
 							player.setHomeruns(player.getHomeruns()+1);
 							player.setHits(player.getHits()+1);
 							gamePlay.getLocal().setHomeruns(gamePlay.getLocal().getHomeruns()+1);
+							gamePlay.getLocal().setHits(gamePlay.getLocal().getHits()+1);
 							player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherVis.getText());
 							player2.setHomerunsPermitidos(player2.getHomerunsPermitidos()+1);
 							player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
-							
 							player.setCarreras(player.getCarreras()+1);
 							gamePlay.getLocal().setCarreras(gamePlay.getLocal().getCarreras()+1);
 							i = Integer.parseInt(txtCarrerasLocal.getText().trim());
@@ -1127,7 +1200,7 @@ public class SimuladorPartido extends JDialog {
 
 							//player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherVis.getText());
 							player2.setCarrerasLimpiasPermitidas(player2.getCarrerasLimpiasPermitidas()+1);
-							
+							player2.setCarrerasPermitidas(player2.getCarrerasLimpiasPermitidas()+player2.getCarrerasSuciasPermitidas());
 							x = Integer.parseInt(txtHistLocal.getText().trim());
 							x = x + 1;
 							txtHistLocal.setText(""+x);
@@ -1156,6 +1229,7 @@ public class SimuladorPartido extends JDialog {
 							player.setHits(player.getHits()+1);
 							gamePlay.getLocal().setDobles(gamePlay.getLocal().getDobles()+1);
 
+							gamePlay.getLocal().setHits(gamePlay.getLocal().getHits()+1);
 							player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherVis.getText());
 							player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
 							
@@ -1693,6 +1767,13 @@ public class SimuladorPartido extends JDialog {
 				lblklk.setBounds(1, 1, 905, 475);
 				panelVisitante.add(lblklk);
 			}
+			{
+				lblPartido = new JLabel("");
+				lblPartido.setForeground(Color.WHITE);
+				lblPartido.setFont(new Font("Tahoma", Font.BOLD, 15));
+				lblPartido.setBounds(275, 161, 517, 23);
+				contentPanel.add(lblPartido);
+			}
 		}
 		{
 			JPanel panelTitulo = new JPanel();
@@ -1953,6 +2034,7 @@ public class SimuladorPartido extends JDialog {
 							player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherLocal.getText());
 							player2.setCarrerasLimpiasPermitidas(player2.getCarrerasLimpiasPermitidas()+1);
 							player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
+							player2.setCarrerasPermitidas(player2.getCarrerasLimpiasPermitidas()+player2.getCarrerasSuciasPermitidas());
 							gamePlay.carrerasPorEntrada(0, 1, gamePlay.getVisitante());
 							llenarPizarraVisitante();
 							llenarPizarraLocal();
@@ -2024,6 +2106,7 @@ public class SimuladorPartido extends JDialog {
 							player2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherVis.getText());
 							player2.setCarrerasLimpiasPermitidas(player2.getCarrerasLimpiasPermitidas()+1);
 							player2.setHitsPermitidos(player2.getHitsPermitidos()+1);
+							player2.setCarrerasPermitidas(player2.getCarrerasLimpiasPermitidas()+player2.getCarrerasSuciasPermitidas());
 							gamePlay.carrerasPorEntrada(1, 0, gamePlay.getLocal());
 							llenarPizarraVisitante();
 							llenarPizarraLocal();
@@ -2084,12 +2167,6 @@ public class SimuladorPartido extends JDialog {
 							p1 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherVis.getText());
 							p2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherLocal.getText());
 							
-							p1.setCarrerasPermitidas(p1.getCarrerasLimpiasPermitidas()+p1.getCarrerasSuciasPermitidas());
-							p2.setCarrerasPermitidas(p1.getCarrerasLimpiasPermitidas()+p1.getCarrerasSuciasPermitidas());
-							p1.setJuegosLanzados(p1.getJuegosLanzados()+1);
-							p2.setJuegosLanzados(p1.getJuegosLanzados()+1);
-							p1.setAperturas(p1.getAperturas()+1);
-							p2.setAperturas(p1.getAperturas()+1);
 							
 							i = Integer.parseInt(txtErrorVis.getText().trim());
 							gamePlay.setErroresVisitante(i);
@@ -2176,6 +2253,18 @@ public class SimuladorPartido extends JDialog {
 			lblFondaso.setIcon(new ImageIcon(SimuladorPartido.class.getResource("/Imagenes/anotherOne.jpg")));
 			lblFondaso.setBounds(-20, -50, 1200, 800);
 			contentPanel.add(lblFondaso);
+		}
+	}
+
+	public void llenarPitchersLocal() {
+		for (Lanzador x : gamePlay.getLocal().getMisLanzadores()) {
+			cbxCambioPitLocal.addItem(x.getNombre());
+		}
+	}
+
+	public void llenarPitchersVis() {
+		for (Lanzador x : gamePlay.getVisitante().getMisLanzadores()) {
+			cbxCambioPitVis.addItem(x.getNombre());
 		}
 	}
 
@@ -2322,5 +2411,4 @@ public class SimuladorPartido extends JDialog {
 		table.getColumnModel().getColumn(11).setCellRenderer(tcr);
 		table.getColumnModel().getColumn(12).setCellRenderer(tcr);
 	}
-	
 }

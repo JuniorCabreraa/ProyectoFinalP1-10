@@ -156,13 +156,6 @@ public class Bateador extends Jugador implements Serializable{
 		return ops;
 	}
 	
-	//Poder Aislado (ISO)
-	public double poderAislado() {
-		double x = slugging()-promedioBateo();
-		double iso = new BigDecimal(x).setScale(3, RoundingMode.HALF_UP).doubleValue();
-		return iso;
-	}
-	
 	//Porcentaje de Fildeo
 	public double porcentajeFildeo() {
 		float x = (((float)outsRealizados+asistencias)/(outsRealizados+asistencias+errores));

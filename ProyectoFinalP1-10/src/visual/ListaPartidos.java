@@ -2,14 +2,11 @@ package visual;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
@@ -40,9 +37,6 @@ public class ListaPartidos extends JDialog {
 	private static JTable table;
 	private static Object[] fila;
 	private static DefaultTableModel tableModel;
-	private JButton btnModificar;
-	private JButton btnEliminar;
-	private int numero;
 
 	/**
 	 * Launch the application.
@@ -93,18 +87,6 @@ public class ListaPartidos extends JDialog {
 			table.setBackground(Color.WHITE);
 			table.setModel(tableModel);
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			table.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					
-					if(table.getSelectedRow()>=0){
-						btnEliminar.setEnabled(true);
-						btnModificar.setEnabled(true);
-						int index = table.getSelectedRow();
-						numero = (int) table.getModel().getValueAt(index, 0);
-					}
-				}
-			});
 			loadPartido();
 			scrollPane.setViewportView(table);
 		}
@@ -112,56 +94,6 @@ public class ListaPartidos extends JDialog {
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-
-			btnModificar = new JButton("Modificar");
-			btnModificar.setIcon(new ImageIcon(ListaPartidos.class.getResource("/Imagenes/modify.png")));
-			btnModificar.setBackground(Color.WHITE);
-			btnModificar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					RegistrarPartido mod = null;
-					try {
-						mod = new RegistrarPartido();
-					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					mod.setModal(true);
-					mod.setLocationRelativeTo(null);
-					mod.setVisible(true);
-					btnModificar.setEnabled(false);
-					btnEliminar.setEnabled(false);
-				}
-			});
-			btnModificar.setActionCommand("OK");
-			buttonPane.add(btnModificar);
-			getRootPane().setDefaultButton(btnModificar);
-			{
-				btnEliminar = new JButton("Eliminar");
-				btnEliminar.setIcon(new ImageIcon(ListaPartidos.class.getResource("/Imagenes/change.png")));
-				btnEliminar.setBackground(Color.WHITE);
-				btnEliminar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-				
-						Partido aux = Liga.getInstance().buscarPartidoPorNumero(numero);
-
-						int delete = JOptionPane.showConfirmDialog(null, "Realmente desea Eliminar el Partido: " + aux.getNoPartido(), null, JOptionPane.YES_NO_OPTION);
-						if (delete == JOptionPane.YES_OPTION)
-						{
-
-							Liga.getInstance().eliminarPartido(aux);
-							loadPartido();
-							btnModificar.setEnabled(false);
-							btnEliminar.setEnabled(false);
-						}
-					}
-				});
-				buttonPane.add(btnEliminar);
-				btnModificar.setEnabled(false);
-				btnEliminar.setEnabled(false);
-				btnEliminar.setActionCommand("OK");
-				buttonPane.add(btnEliminar);
-				getRootPane().setDefaultButton(btnEliminar);
-			}
 			{
 				JButton cancelButton = new JButton("Salir");
 				cancelButton.setIcon(new ImageIcon(ListaPartidos.class.getResource("/Imagenes/Salir.png")));

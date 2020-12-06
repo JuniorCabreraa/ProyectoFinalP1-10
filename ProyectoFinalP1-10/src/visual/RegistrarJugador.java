@@ -330,6 +330,7 @@ public class RegistrarJugador extends JDialog {
 							if (team.verificarNoCami(player) == false) {
 								if (team.getMisJugadores().size() < 25) {
 									team.insertarJugador(player);
+									team.insertarLanzador((Lanzador) player);
 									JOptionPane.showMessageDialog(null, "Agregado Satisfactoriamente", null, JOptionPane.WARNING_MESSAGE);
 									clean();
 								} else {

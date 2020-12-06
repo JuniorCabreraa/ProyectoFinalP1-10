@@ -35,8 +35,6 @@ import java.awt.Toolkit;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -66,16 +64,10 @@ public class ListaEstadisticasJugadores extends JDialog {
 	 * Create the dialog.
 	 */
 	public ListaEstadisticasJugadores() throws ParseException{
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowOpened(WindowEvent e) {
-				
-			}
-		});
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ListaEstadisticasJugadores.class.getResource("/Imagenes/bateador.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ListaEstadisticasJugadores.class.getResource("/Imagenes/team.png")));
 		setModal(true);
 		setTitle("Estad\u00EDsticas Jugadores");
-		setBounds(100, 100, 984, 408);
+		setBounds(100, 100, 1022, 408);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		getContentPane().setLayout(new BorderLayout());
@@ -87,13 +79,13 @@ public class ListaEstadisticasJugadores extends JDialog {
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel.setBounds(10, 11, 950, 293);
+		panel.setBounds(10, 11, 985, 293);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(10, 54, 930, 228);
+		scrollPane.setBounds(10, 54, 965, 228);
 		panel.add(scrollPane);
 
 		table = new JTable();
@@ -166,17 +158,30 @@ public class ListaEstadisticasJugadores extends JDialog {
 			}
 			break;
 		case 1:
-			String[] columnNames1 = {"No","Nombre","Posicion","Equipo","C","H", "2B","3B","HR","CI","AVG","OBP","SLG","OPS"};
+			String[] columnNames1 = {"No","Nombre","Posicion","Equipo","C","H", "2B","3B","HR","CI","AVG","OBP","SLG","OPS", "FP", "RF"};
 			tableModel.setColumnIdentifiers(columnNames1);
 			table.setModel(tableModel);
 			tableModel.setRowCount(0);
 			fila = new Object[tableModel.getColumnCount()];
 			for (Jugador aux : Liga.getInstance().getListaJugadores()) {
 				if(aux instanceof Bateador){
-					BigDecimal avg = new BigDecimal(((Bateador) aux).promedioBateo()).setScale(3, RoundingMode.HALF_UP);
-					BigDecimal obp = new BigDecimal(((Bateador) aux).porcentajeAlcanceBases()).setScale(3, RoundingMode.HALF_UP);
-					BigDecimal slg = new BigDecimal(((Bateador) aux).slugging()).setScale(3, RoundingMode.HALF_UP);
-					BigDecimal ops = new BigDecimal(((Bateador) aux).porcentajeAlcanceBasesPorSlugging()).setScale(3, RoundingMode.HALF_UP);
+					BigDecimal avg = null;
+					BigDecimal obp = null;
+					BigDecimal slg = null;
+					BigDecimal ops = null;
+					BigDecimal f = null;
+					BigDecimal rf = null;
+					try {
+						avg = new BigDecimal(((Bateador) aux).promedioBateo()).setScale(3, RoundingMode.HALF_UP);
+						obp = new BigDecimal(((Bateador) aux).porcentajeAlcanceBases()).setScale(3, RoundingMode.HALF_UP);
+						slg = new BigDecimal(((Bateador) aux).slugging()).setScale(3, RoundingMode.HALF_UP);
+						ops = new BigDecimal(((Bateador) aux).porcentajeAlcanceBasesPorSlugging()).setScale(3, RoundingMode.HALF_UP);
+						f = new BigDecimal(((Bateador) aux).porcentajeFildeo()).setScale(3, RoundingMode.HALF_UP);
+						rf = new BigDecimal(((Bateador) aux).factorAlcance()).setScale(2, RoundingMode.HALF_UP);
+					} catch (NumberFormatException e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
 					fila[0] = aux.getNoCamiseta();
 					fila[1] = aux.getNombre();
 					fila[2] = aux.getPosicion();
@@ -187,10 +192,36 @@ public class ListaEstadisticasJugadores extends JDialog {
 					fila[7] = ((Bateador) aux).getTriples();
 					fila[8] = ((Bateador) aux).getHomeruns();
 					fila[9] = ((Bateador) aux).getCarrerasImpulsadas();
-					fila[10] = avg;
-					fila[11] = obp;
-					fila[12] = slg;
-					fila[13] = ops;
+					if (((Bateador) aux).getTurnosBate() > 0 && ((Bateador) aux).getHits() > 0) {
+						fila[10] = avg;
+					} else {
+						fila[10] = "0.000";
+					}
+					if (((Bateador) aux).getHits() > 0) {
+						fila[11] = obp;
+					} else {
+						fila[11] = "0.000";
+					}
+					if (((Bateador) aux).getTurnosBate() > 0 && ((Bateador) aux).getHits() > 0) {
+						fila[12] = slg;
+					} else {
+						fila[12] = "0.000";
+					}
+					if (((Bateador) aux).getTurnosBate() > 0 && ((Bateador) aux).getHits() > 0) {
+						fila[13] = ops;
+					} else {
+						fila[13] = "0.000";
+					}
+					if (((Bateador) aux).getOutsRealizados() > 0 || ((Bateador) aux).getAsistencias() > 0) {
+						fila[14] = f;
+					} else {
+						fila[14] = "0.000";
+					}
+					if (((Bateador) aux).getOutsRealizados() > 0 || ((Bateador) aux).getAsistencias() > 0) {
+						fila[15] = rf;
+					} else {
+						fila[15] = "0.00";
+					}
 
 					tableModel.addRow(fila);
 					DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
@@ -205,6 +236,8 @@ public class ListaEstadisticasJugadores extends JDialog {
 					table.getColumnModel().getColumn(11).setCellRenderer(tcr);
 					table.getColumnModel().getColumn(12).setCellRenderer(tcr);
 					table.getColumnModel().getColumn(13).setCellRenderer(tcr);
+					table.getColumnModel().getColumn(14).setCellRenderer(tcr);
+					table.getColumnModel().getColumn(15).setCellRenderer(tcr);
 				}
 			}
 			break;
@@ -216,9 +249,17 @@ public class ListaEstadisticasJugadores extends JDialog {
 			fila = new Object[tableModel.getColumnCount()];
 			for (Jugador aux : Liga.getInstance().getListaJugadores()) {
 				if(aux instanceof Lanzador){
-					BigDecimal pcl = new BigDecimal(((Lanzador) aux).porcentajeCarrerasLimpias()).setScale(2, RoundingMode.HALF_UP);
-					BigDecimal il = new BigDecimal(((Lanzador) aux).entradasLanzadas()).setScale(1, RoundingMode.HALF_UP);
-					BigDecimal whip = new BigDecimal(((Lanzador) aux).boletosYhits()).setScale(2, RoundingMode.HALF_UP);
+					BigDecimal pcl = null;
+					BigDecimal il = null;
+					BigDecimal whip = null;
+					try {
+						pcl = new BigDecimal(((Lanzador) aux).porcentajeCarrerasLimpias()).setScale(2, RoundingMode.HALF_UP);
+						il = new BigDecimal(((Lanzador) aux).entradasLanzadas()).setScale(1, RoundingMode.HALF_UP);
+						whip = new BigDecimal(((Lanzador) aux).boletosYhits()).setScale(2, RoundingMode.HALF_UP);
+					} catch (NumberFormatException e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
 					fila[0] = aux.getNoCamiseta();
 					fila[1] = aux.getNombre();
 					fila[2] = aux.getPosicion();
@@ -230,9 +271,18 @@ public class ListaEstadisticasJugadores extends JDialog {
 					fila[8] = ((Lanzador) aux).getBateadoresGolpeados();
 					fila[9] = ((Lanzador) aux).getBoletosBase();
 					fila[10] = ((Lanzador) aux).getPonches();
-					fila[11] = pcl;
-					fila[12] = il;
-					fila[13] = whip;
+					if (((Lanzador) aux).getCarrerasLimpiasPermitidas() > 0 && ((Lanzador) aux).getOuts() > 0) {
+						fila[11] = pcl;
+						fila[12] = il;
+					} else {
+						fila[11] = "0.00";
+						fila[12] = "0.0";
+					}
+					if ( ((Lanzador) aux).getOuts() > 0 &&  ((Lanzador) aux).getBoletosBase() > 0 &&  ((Lanzador) aux).getHitsPermitidos() > 0) {
+						fila[13] = whip;
+					} else {
+						fila[13] = "0.00";
+					}
 
 					tableModel.addRow(fila);
 					DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
@@ -251,7 +301,7 @@ public class ListaEstadisticasJugadores extends JDialog {
 			}
 			break;
 		}
-		
+
 		TableColumnModel columnModel = table.getColumnModel();
 		columnModel.getColumn(0).setPreferredWidth(45);
 		columnModel.getColumn(1).setPreferredWidth(180);

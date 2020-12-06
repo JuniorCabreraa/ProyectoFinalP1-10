@@ -120,14 +120,18 @@ public class Lista10Bateadores extends JDialog {
 			}
 		}
 		bateadoresCargar();
-		
-		Collections.sort(bateadores, new Comparator<Bateador>() {
-			@Override
-			public int compare(Bateador o1, Bateador o2) {
-				// TODO Auto-generated method stub
-				return new Integer((int) (o2.promedioBateo()*1000)).compareTo(new Integer((int) (o1.promedioBateo()*1000)));
-			}
-		});
+		try {
+			Collections.sort(bateadores, new Comparator<Bateador>() {
+				@Override
+				public int compare(Bateador o1, Bateador o2) {
+					// TODO Auto-generated method stub
+					return new Integer((int) (o2.promedioBateo()*1000)).compareTo(new Integer((int) (o1.promedioBateo()*1000)));
+				}
+			});
+		} catch (NumberFormatException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		
 		loadJugador();
 	}
@@ -147,12 +151,22 @@ public class Lista10Bateadores extends JDialog {
 		
 		for (Bateador aux : bateadores) {
 			if (x<10) {
-				BigDecimal avg = new BigDecimal(aux.promedioBateo()).setScale(3, RoundingMode.HALF_UP);
+				BigDecimal avg = null;
+				try {
+					avg = new BigDecimal(aux.promedioBateo()).setScale(3, RoundingMode.HALF_UP);
+				} catch (NumberFormatException e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
 				fila[0] = aux.getNoCamiseta();
 				fila[1] = aux.getNombre();
 				fila[2] = aux.getPosicion();
 				fila[3] = aux.getEquipo().getNombre();
-				fila[4] = avg;
+				if (aux.getTurnosBate() > 0 && aux.getHits() > 0) {
+					fila[4] = avg;
+				} else {
+					fila[4] = "0.000";
+				}
 				fila[5] = aux.getHits();
 				fila[6] = aux.getTurnosBate();
 				tableModel.addRow(fila);

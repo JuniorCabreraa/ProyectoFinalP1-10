@@ -170,7 +170,7 @@ public class AlineacionJuego extends JDialog {
 							llenarVisitanteRoster();
 						}
 						if (game.getVisitante().getAlineacion().size() >= 9) {
-							JOptionPane.showMessageDialog(null, "Alineación Visitante Completa", null, JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Alineación Visitante Completa", null, JOptionPane.INFORMATION_MESSAGE);
 						}
 						btnAgregarVisitante.setEnabled(false);
 					}

@@ -120,14 +120,18 @@ public class Lista10Lanzadores extends JDialog {
 			}
 		}
 		lanzadoresCargar();
-		
-		Collections.sort(lanzadores, new Comparator<Lanzador>() {
-			@Override
-			public int compare(Lanzador o1, Lanzador o2) {
-				// TODO Auto-generated method stub
-				return new Integer((int) (o2.porcentajeCarrerasLimpias()*100)).compareTo(new Integer((int) (o1.porcentajeCarrerasLimpias()*100)));
-			}
-		});
+		try {
+			Collections.sort(lanzadores, new Comparator<Lanzador>() {
+				@Override
+				public int compare(Lanzador o1, Lanzador o2) {
+					// TODO Auto-generated method stub
+					return new Integer((int) (o2.porcentajeCarrerasLimpias()*100)).compareTo(new Integer((int) (o1.porcentajeCarrerasLimpias()*100)));
+				}
+			});
+		} catch (NumberFormatException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		
 		loadJugador();
 	}
@@ -147,14 +151,28 @@ public class Lista10Lanzadores extends JDialog {
 		
 		for (Lanzador aux : lanzadores) {
 			if (x<10) {
-				BigDecimal pcl = new BigDecimal(aux.porcentajeCarrerasLimpias()).setScale(2, RoundingMode.HALF_UP);
+				BigDecimal pcl = null;
+				BigDecimal il = null;
+				try {
+					pcl = new BigDecimal(aux.porcentajeCarrerasLimpias()).setScale(2, RoundingMode.HALF_UP);
+					il = new BigDecimal(aux.entradasLanzadas()).setScale(1, RoundingMode.HALF_UP);
+				} catch (NumberFormatException e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
 				fila[0] = aux.getNoCamiseta();
 				fila[1] = aux.getNombre();
 				fila[2] = aux.getPosicion();
 				fila[3] = aux.getEquipo().getNombre();
-				fila[4] = pcl;
-				fila[5] = aux.entradasLanzadas();
+				if (aux.getCarrerasLimpiasPermitidas() > 0 && aux.getOuts() > 0) {
+					fila[4] = pcl;
+					fila[5] = il;
+				} else {
+					fila[4] = "0.00";
+					fila[5] = "0.0";
+				}
 				fila[6] = aux.getCarrerasLimpiasPermitidas();
+
 				tableModel.addRow(fila);
 			}
 			x++;

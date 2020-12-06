@@ -40,7 +40,6 @@ public class ListaEquipos extends JDialog {
 	private static JTable table;
 	private static Object[] fila;
 	private static DefaultTableModel tableModel;
-	private JButton btnModificar;
 	private JButton btnEliminar;
 	private String name;
 
@@ -96,7 +95,6 @@ public class ListaEquipos extends JDialog {
 					int delivery;*/
 					if(table.getSelectedRow()>=0){
 						btnEliminar.setEnabled(true);
-						btnModificar.setEnabled(true);
 						int index = table.getSelectedRow();
 						name = (String)table.getModel().getValueAt(index, 1);
 					}
@@ -112,29 +110,6 @@ public class ListaEquipos extends JDialog {
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-
-			btnModificar = new JButton("Modificar");
-			btnModificar.setIcon(new ImageIcon(ListaEquipos.class.getResource("/Imagenes/modify.png")));
-			btnModificar.setBackground(Color.WHITE);
-			btnModificar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					RegistrarEquipo mod = null;
-					try {
-						mod = new RegistrarEquipo();
-					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					mod.setModal(true);
-					mod.setLocationRelativeTo(null);
-					mod.setVisible(true);
-					btnModificar.setEnabled(false);
-					btnEliminar.setEnabled(false);
-				}
-			});
-			btnModificar.setActionCommand("OK");
-			buttonPane.add(btnModificar);
-			getRootPane().setDefaultButton(btnModificar);
 			{
 				btnEliminar = new JButton("Eliminar");
 				btnEliminar.setIcon(new ImageIcon(ListaEquipos.class.getResource("/Imagenes/change.png")));
@@ -150,13 +125,11 @@ public class ListaEquipos extends JDialog {
 
 							Liga.getInstance().eliminarEquipo(aux);
 							loadEquipo();
-							btnModificar.setEnabled(false);
 							btnEliminar.setEnabled(false);
 						}
 					}
 				});
 				buttonPane.add(btnEliminar);
-				btnModificar.setEnabled(false);
 				btnEliminar.setEnabled(false);
 				btnEliminar.setActionCommand("OK");
 				buttonPane.add(btnEliminar);
@@ -198,13 +171,6 @@ public class ListaEquipos extends JDialog {
 		columnModel.getColumn(1).setPreferredWidth(200);
 		columnModel.getColumn(2).setPreferredWidth(151);
 		columnModel.getColumn(3).setPreferredWidth(163);
-
-		/*if(tableModel.getRowCount()==0){
-			btnEliminar.setEnabled(false);
-			btnModificar.setEnabled(false);
-		}*/
-
-
 	}
 
 }
