@@ -125,7 +125,7 @@ public class Lista10Lanzadores extends JDialog {
 				@Override
 				public int compare(Lanzador o1, Lanzador o2) {
 					// TODO Auto-generated method stub
-					return new Integer((int) (o2.porcentajeCarrerasLimpias()*100)).compareTo(new Integer((int) (o1.porcentajeCarrerasLimpias()*100)));
+					return new Integer((int) (o1.porcentajeCarrerasLimpias()*100)).compareTo(new Integer((int) (o2.porcentajeCarrerasLimpias()*100)));
 				}
 			});
 		} catch (NumberFormatException e) {

@@ -29,8 +29,6 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -167,14 +165,16 @@ public class RegistrarPartido extends JDialog {
 		}
 		{
 			cbxLocal = new JComboBox<String>();
-			cbxLocal.setBackground(Color.WHITE);
-			cbxLocal.addItemListener(new ItemListener() {
-				public void itemStateChanged(ItemEvent e) {
-					Equipo team = null;
-					team = Liga.getInstance().buscarEquipoPorNombre(cbxLocal.getSelectedItem().toString());
-					txtEstadio.setText(""+team.getEstadio());
+			cbxLocal.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (cbxLocal.getSelectedIndex() > 0) {
+						Equipo team = null;
+						team = Liga.getInstance().buscarEquipoPorNombre(cbxLocal.getSelectedItem().toString());
+						txtEstadio.setText(""+team.getEstadio());
+					}
 				}
 			});
+			cbxLocal.setBackground(Color.WHITE);
 			cbxLocal.setModel(new DefaultComboBoxModel<String>(new String[] {"<Seleccione>"}));
 			cbxLocal.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			cbxLocal.setBounds(142, 114, 118, 24);

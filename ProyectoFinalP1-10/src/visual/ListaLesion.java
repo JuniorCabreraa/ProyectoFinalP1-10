@@ -3,13 +3,10 @@ package visual;
 import java.awt.BorderLayout;
 
 import java.awt.FlowLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.text.ParseException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
@@ -48,9 +45,6 @@ public class ListaLesion extends JDialog {
 	private static JTable table;
 	private static Object[] fila;
 	private static DefaultTableModel tableModel;
-	private JButton btnModificar;
-	private JButton btnEliminar;
-	private String name;
 	private JLabel lblMostrarPorEquipo;
 	private JComboBox<String> cbxEquipo;
 	private Equipo team = null;
@@ -107,18 +101,6 @@ public class ListaLesion extends JDialog {
 			table.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			table.setBackground(Color.WHITE);
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			table.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-
-					if(table.getSelectedRow()!=-1){
-						btnEliminar.setEnabled(true);
-						btnModificar.setEnabled(true);
-						int index = table.getSelectedRow();
-						name = (String)table.getModel().getValueAt(index, 0);
-					}
-				}
-			});
 			tableModel = new DefaultTableModel();
 			String[] columnNames = {"Jugador","Equipo", "Categoria", "Estado"};
 			tableModel.setColumnIdentifiers(columnNames);
@@ -138,11 +120,9 @@ public class ListaLesion extends JDialog {
 							int i = 1;
 							team = Liga.getInstance().buscarEquipoPorNombre(cbxEquipo.getSelectedItem().toString());
 							loadLesion(i);
-							btnEliminar.setEnabled(false);
 						} else {
 							int i = 0;
 							loadLesion(i);
-							btnEliminar.setEnabled(false);
 						}
 					}
 				});
@@ -157,47 +137,6 @@ public class ListaLesion extends JDialog {
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-
-			btnModificar = new JButton("Modificar");
-			btnModificar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					RegistrarLesion mod = null;
-					try {
-						mod = new RegistrarLesion();
-						mod.setVisible(true);
-					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					btnModificar.setEnabled(false);
-					btnEliminar.setEnabled(false);
-				}
-			});
-			{
-				btnEliminar = new JButton("Eliminar");
-				btnEliminar.setIcon(new ImageIcon(ListaLesion.class.getResource("/Imagenes/change.png")));
-				btnEliminar.setBackground(Color.WHITE);
-				btnEliminar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						JOptionPane.showMessageDialog(null, name, null, JOptionPane.ERROR_MESSAGE);
-						Jugador aux = Liga.getInstance().buscarJugadorPorNombre(name);
-
-						int delete = JOptionPane.showConfirmDialog(null, "Realmente desea Eliminar la Lesion de: " + aux.getNombre(), null, JOptionPane.YES_NO_OPTION);
-						if (delete == JOptionPane.YES_OPTION)
-						{
-							loadLesion(0);
-							cbxEquipo.setSelectedIndex(0);
-							btnModificar.setEnabled(false);
-							btnEliminar.setEnabled(false);
-						}
-					}
-				});
-				buttonPane.add(btnEliminar);
-				btnEliminar.setEnabled(false);
-				btnEliminar.setActionCommand("OK");
-				buttonPane.add(btnEliminar);
-				getRootPane().setDefaultButton(btnEliminar);
-			}
 			{
 				JButton cancelButton = new JButton("Salir");
 				cancelButton.setIcon(new ImageIcon(ListaLesion.class.getResource("/Imagenes/Salir.png")));

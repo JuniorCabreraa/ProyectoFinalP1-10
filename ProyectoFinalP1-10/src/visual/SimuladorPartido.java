@@ -216,9 +216,9 @@ public class SimuladorPartido extends JDialog {
 				p1 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherVis.getText());
 				p2 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(txtPitcherLocal.getText());
 				p1.setJuegosLanzados(p1.getJuegosLanzados()+1);
-				p2.setJuegosLanzados(p1.getJuegosLanzados()+1);
+				p2.setJuegosLanzados(p2.getJuegosLanzados()+1);
 				p1.setAperturas(p1.getAperturas()+1);
-				p2.setAperturas(p1.getAperturas()+1);
+				p2.setAperturas(p2.getAperturas()+1);
 			}
 		});
 		gamePlay = juego;
@@ -257,10 +257,12 @@ public class SimuladorPartido extends JDialog {
 						cbxCambioPitLocal.setVisible(false);
 						cbxCambioPitLocal.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
-								Lanzador p1 = null;
-								txtPitcherLocal.setText(cbxCambioPitLocal.getSelectedItem().toString());
-								p1 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(cbxCambioPitLocal.getSelectedItem().toString());
-								p1.setJuegosLanzados(p1.getJuegosLanzados()+1);
+								if (cbxCambioPitLocal.getSelectedIndex() > 0) {
+									Lanzador p1 = null;
+									txtPitcherLocal.setText(cbxCambioPitLocal.getSelectedItem().toString());
+									p1 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(cbxCambioPitLocal.getSelectedItem().toString());
+									p1.setJuegosLanzados(p1.getJuegosLanzados()+1);
+								}
 								cbxCambioPitLocal.setVisible(false);
 							}
 						});
@@ -1023,10 +1025,12 @@ public class SimuladorPartido extends JDialog {
 					cbxCambioPitVis.setVisible(false);
 					cbxCambioPitVis.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							Lanzador p1 = null;
-							txtPitcherVis.setText(cbxCambioPitVis.getSelectedItem().toString());
-							p1 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(cbxCambioPitVis.getSelectedItem().toString());
-							p1.setJuegosLanzados(p1.getJuegosLanzados()+1);
+							if (cbxCambioPitVis.getSelectedIndex() > 0) {
+								Lanzador p1 = null;
+								txtPitcherVis.setText(cbxCambioPitVis.getSelectedItem().toString());
+								p1 = (Lanzador) Liga.getInstance().buscarJugadorPorNombre(cbxCambioPitVis.getSelectedItem().toString());
+								p1.setJuegosLanzados(p1.getJuegosLanzados()+1);
+							}
 							cbxCambioPitVis.setVisible(false);
 						}
 					});
@@ -2038,6 +2042,7 @@ public class SimuladorPartido extends JDialog {
 							gamePlay.carrerasPorEntrada(0, 1, gamePlay.getVisitante());
 							llenarPizarraVisitante();
 							llenarPizarraLocal();
+							cbxCarreraVis.setSelectedIndex(0);
 						}
 					}
 				});
@@ -2098,7 +2103,7 @@ public class SimuladorPartido extends JDialog {
 						if (cbxCarrerasLocal.getSelectedIndex() > 0) {
 							player = (Bateador) Liga.getInstance().buscarJugadorPorNombre(cbxCarrerasLocal.getSelectedItem().toString());
 							player.setCarreras(player.getCarreras()+1);
-							gamePlay.getVisitante().setCarreras(gamePlay.getVisitante().getCarreras()+1);
+							gamePlay.getLocal().setCarreras(gamePlay.getLocal().getCarreras()+1);
 							i = Integer.parseInt(txtCarrerasLocal.getText().trim());
 							i = i+1;
 							txtCarrerasLocal.setText(""+i);
@@ -2110,6 +2115,7 @@ public class SimuladorPartido extends JDialog {
 							gamePlay.carrerasPorEntrada(1, 0, gamePlay.getLocal());
 							llenarPizarraVisitante();
 							llenarPizarraLocal();
+							cbxCarrerasLocal.setSelectedIndex(0);
 						}
 					}
 				});
