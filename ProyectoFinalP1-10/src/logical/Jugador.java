@@ -200,6 +200,7 @@ public class Jugador implements Serializable{
 		for (Lesion lesion : misLesiones) {
 			if (lesion.getDiagnostico().equals(broken)) {
 				misLesiones.remove(lesion);
+				lesionado = false;
 			}
 		}
 	}

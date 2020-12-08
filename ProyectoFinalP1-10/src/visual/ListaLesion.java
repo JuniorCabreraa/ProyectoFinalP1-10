@@ -40,6 +40,7 @@ import javax.swing.ImageIcon;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowFocusListener;
 
 @SuppressWarnings("serial")
 public class ListaLesion extends JDialog {
@@ -72,6 +73,13 @@ public class ListaLesion extends JDialog {
 	 * Create the dialog.
 	 */
 	public ListaLesion() throws ParseException{
+		addWindowFocusListener(new WindowFocusListener() {
+			public void windowGainedFocus(WindowEvent arg0) {
+				loadLesion(0);
+			}
+			public void windowLostFocus(WindowEvent arg0) {
+			}
+		});
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent arg0) {
