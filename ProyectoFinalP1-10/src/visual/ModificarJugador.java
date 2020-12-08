@@ -329,7 +329,7 @@ public class ModificarJugador extends JDialog {
 					}
 				}
 			});
-			btnSave.setBounds(243, 282, 121, 31);
+			btnSave.setBounds(237, 282, 127, 31);
 			contentPanel.add(btnSave);
 		}
 		{

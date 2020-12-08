@@ -363,7 +363,6 @@ public class AlineacionJuego extends JDialog {
 								game.getAlineacionLocal().addAll(game.getLocal().getAlineacion());
 								game.getAlineacionVisitante().addAll(game.getVisitante().getAlineacion());
 							}
-							JOptionPane.showMessageDialog(null, "A JUGAR!!!", null, JOptionPane.INFORMATION_MESSAGE);
 							dispose();
 							SimuladorPartido simuPart = new SimuladorPartido(game);
 							simuPart.setVisible(true);
