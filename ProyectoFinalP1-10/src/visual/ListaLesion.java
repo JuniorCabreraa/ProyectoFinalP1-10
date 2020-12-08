@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ListSelectionModel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import java.awt.Font;
 import java.awt.Color;
@@ -37,6 +38,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
 import javax.swing.ScrollPaneConstants;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
 public class ListaLesion extends JDialog {
@@ -47,7 +50,10 @@ public class ListaLesion extends JDialog {
 	private static DefaultTableModel tableModel;
 	private JLabel lblMostrarPorEquipo;
 	private JComboBox<String> cbxEquipo;
+	private JButton btnEliminar;
 	private Equipo team = null;
+	private Jugador player = null;
+	private String lesion = null;
 
 	/**
 	 * Launch the application.
@@ -76,7 +82,7 @@ public class ListaLesion extends JDialog {
 		setResizable(false);
 		setModal(true);
 		setTitle("Listado de Lesiones");
-		setBounds(100, 100, 640, 375);
+		setBounds(100, 100, 826, 375);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
@@ -87,22 +93,35 @@ public class ListaLesion extends JDialog {
 			JPanel panel = new JPanel();
 			panel.setBackground(Color.WHITE);
 			panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-			panel.setBounds(10, 11, 604, 265);
+			panel.setBounds(10, 11, 784, 265);
 			contentPanel.add(panel);
 			panel.setLayout(null);
 
 			JScrollPane scrollPane = new JScrollPane();
 			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-			scrollPane.setBounds(10, 61, 584, 193);
+			scrollPane.setBounds(10, 61, 764, 193);
 			panel.add(scrollPane);
 
 			table = new JTable();
+			table.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					player = null;
+					lesion = null;
+					int seleccion = table.getSelectedRow();
+					if (seleccion != -1) {
+						btnEliminar.setEnabled(true);
+						player = Liga.getInstance().buscarJugadorPorNombre((String) tableModel.getValueAt(seleccion, 0));
+						lesion = (String) tableModel.getValueAt(seleccion, 4);
+					}
+				}
+			});
 			table.setForeground(new Color(0, 0, 0));
 			table.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			table.setBackground(Color.WHITE);
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			tableModel = new DefaultTableModel();
-			String[] columnNames = {"Jugador","Equipo", "Categoria", "Estado"};
+			String[] columnNames = {"Jugador","Equipo", "Categoria", "Estado", "Diagnostico"};
 			tableModel.setColumnIdentifiers(columnNames);
 			loadLesion(0);
 			scrollPane.setViewportView(table);
@@ -146,6 +165,24 @@ public class ListaLesion extends JDialog {
 						dispose();
 					}
 				});
+				{
+					btnEliminar = new JButton("Eliminar");
+					btnEliminar.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							int delete = JOptionPane.showConfirmDialog(null, "Realmente desea eliminar la lesion de: " + player.getNombre(), null, JOptionPane.YES_NO_OPTION);
+							if (delete == JOptionPane.YES_OPTION){
+								player.eliminarLesion(lesion);
+								btnEliminar.setEnabled(false);
+								loadLesion(0);
+							}
+							btnEliminar.setEnabled(false);
+						}
+					});
+					btnEliminar.setEnabled(false);
+					btnEliminar.setBackground(Color.WHITE);
+					btnEliminar.setIcon(new ImageIcon(ListaLesion.class.getResource("/Imagenes/change.png")));
+					buttonPane.add(btnEliminar);
+				}
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
@@ -172,6 +209,7 @@ public class ListaLesion extends JDialog {
 					} else {
 						fila[3] = "Completada";
 					}
+					fila[4] = aux.getDiagnostico();
 					tableModel.addRow(fila);
 				}
 			}
@@ -187,6 +225,7 @@ public class ListaLesion extends JDialog {
 					} else {
 						fila[3] = "Completada";
 					}
+					fila[4] = aux.getDiagnostico();
 					tableModel.addRow(fila);
 				}
 			}
@@ -196,13 +235,9 @@ public class ListaLesion extends JDialog {
 		}
 
 		table.setModel(tableModel);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.getTableHeader().setReorderingAllowed(false);
 		TableColumnModel columnModel = table.getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(200);
-		columnModel.getColumn(1).setPreferredWidth(150);
-		columnModel.getColumn(2).setPreferredWidth(120);
-		columnModel.getColumn(3).setPreferredWidth(111);
+		columnModel.getColumn(4).setPreferredWidth(210);
 
 	}
 }

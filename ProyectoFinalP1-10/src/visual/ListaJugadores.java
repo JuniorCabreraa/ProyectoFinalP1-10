@@ -38,6 +38,7 @@ import java.awt.Toolkit;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 
 @SuppressWarnings("serial")
 public class ListaJugadores extends JDialog {
@@ -51,6 +52,7 @@ public class ListaJugadores extends JDialog {
 	private JComboBox<String> cbxTipoDeJugador;
 	private JComboBox<String> cbxEquipo;
 	private static Equipo team = null;
+	private JButton btnModificar;
 
 	/**
 	 * Launch the application.
@@ -69,6 +71,13 @@ public class ListaJugadores extends JDialog {
 	 * Create the dialog.
 	 */
 	public ListaJugadores() throws ParseException{
+		addWindowFocusListener(new WindowFocusListener() {
+			public void windowGainedFocus(WindowEvent e) {
+				loadJugador(0);
+			}
+			public void windowLostFocus(WindowEvent e) {
+			}
+		});
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
@@ -108,6 +117,7 @@ public class ListaJugadores extends JDialog {
 
 				if(table.getSelectedRow()>=0){
 					btnEliminar.setEnabled(true);
+					btnModificar.setEnabled(true);
 					int index = table.getSelectedRow();
 					name = (String)table.getModel().getValueAt(index, 1);
 
@@ -199,9 +209,34 @@ public class ListaJugadores extends JDialog {
 							Liga.getInstance().eliminarJugador(aux);
 							loadJugador(0);
 							btnEliminar.setEnabled(false);
+							btnModificar.setEnabled(false);
 						}
+						btnEliminar.setEnabled(false);
+						btnModificar.setEnabled(false);
 					}
 				});
+				{
+					btnModificar = new JButton("Modificar");
+					btnModificar.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							Jugador aux = Liga.getInstance().buscarJugadorPorNombre(name);
+
+							int delete = JOptionPane.showConfirmDialog(null, "Realmente desea Modificar al Jugador: " + aux.getNombre(), null, JOptionPane.YES_NO_OPTION);
+							if (delete == JOptionPane.YES_OPTION){
+								ModificarJugador modiJuga = new ModificarJugador(aux);
+								modiJuga.setVisible(true);
+								btnEliminar.setEnabled(false);
+								btnModificar.setEnabled(false);
+							}
+							btnEliminar.setEnabled(false);
+							btnModificar.setEnabled(false);
+						}
+					});
+					btnModificar.setIcon(new ImageIcon(ListaJugadores.class.getResource("/Imagenes/modify.png")));
+					btnModificar.setEnabled(false);
+					btnModificar.setBackground(Color.WHITE);
+					buttonPane.add(btnModificar);
+				}
 				buttonPane.add(btnEliminar);
 				btnEliminar.setEnabled(false);
 				btnEliminar.setActionCommand("OK");

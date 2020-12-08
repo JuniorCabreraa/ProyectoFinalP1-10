@@ -194,5 +194,13 @@ public class Jugador implements Serializable{
 			} 
 		}
 	}	
-
+	
+	//Eliminar Lesion
+	public void eliminarLesion(String broken) {
+		for (Lesion lesion : misLesiones) {
+			if (lesion.getDiagnostico().equals(broken)) {
+				misLesiones.remove(lesion);
+			}
+		}
+	}
 }

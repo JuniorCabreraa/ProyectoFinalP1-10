@@ -21,7 +21,7 @@ public class GraficoLesion extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	
 	public GraficoLesion() {
-		setTitle("Gr\u00E1fico de Lesiones por Tipo");
+		setTitle("Gr\u00E1fico de Lesionados por Categor\u00EDa");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(GraficoLesion.class.getResource("/Imagenes/med.png")));
 		setResizable(false);
 		setModal(true);
@@ -44,7 +44,7 @@ public class GraficoLesion extends JDialog {
         data.setValue(x[05], "Pie", "");
  
         JFreeChart chart = ChartFactory.createBarChart3D(
-         "Lesiones por Categoria", "Categoria", "Cantidad", 
+         "Lesionados por Categoria", "Categoria", "Cantidad", 
          data,PlotOrientation.VERTICAL, true, true, false);
         
         ChartPanel chartPanel = new ChartPanel(chart);
